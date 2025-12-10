@@ -7,16 +7,35 @@ const chokidar = require('chokidar')
 const chalk = require('chalk')
 const ora = require('ora')
 
-const staticDir = path.join(__dirname, 'static')
+// 从命令行参数获取监听路径
+const targetPath = process.argv[2]
 
-// 检查是否已经是日期时间格式命名（YYYYMMDDHHMMSS，14位数字）
-function isTimestampName(filename) {
-  const nameWithoutExt = path.parse(filename).name
-  // 匹配 20251107114812 这种格式（14位数字）
-  return /^\d{14}$/.test(nameWithoutExt)
+if (!targetPath) {
+  console.log()
+  console.log(chalk.red.bold('  ❌ 错误: 缺少路径参数'))
+  console.log()
+  console.log(chalk.cyan.bold('  📖 用法:'))
+  console.log(chalk.gray('    node set.images.prefix.js <监听路径>'))
+  console.log()
+  console.log(chalk.cyan.bold('  📚 示例:'))
+  console.log(chalk.green('    node set.images.prefix.js ./static'))
+  console.log(chalk.green('    node set.images.prefix.js C:/Users/xxx/Desktop/images'))
+  console.log(chalk.yellow('    node set.images.prefix.js ../assets/images'))
+  console.log()
+  process.exit(1)
 }
 
-// 生成日期时间格式文件名（YYYYMMDDHHMMSS）
+// 将相对路径转换为绝对路径
+const staticDir = path.isAbsolute(targetPath) ? targetPath : path.resolve(__dirname, targetPath)
+
+// 检查是否已经是日期时间格式命名（YYYYMMDDHHMMSS 或 YYYYMMDDHHMMSS + 毫秒，14-17位数字，可能带下划线序号）
+function isTimestampName(filename) {
+  const nameWithoutExt = path.parse(filename).name
+  // 匹配 20251107114812 或 20251210161451123 或 20251210161451123_1 这种格式
+  return /^\d{14,17}(_\d+)?$/.test(nameWithoutExt)
+}
+
+// 生成日期时间格式文件名（YYYYMMDDHHMMSS + 毫秒）
 function generateTimestampName(originalPath) {
   const ext = path.extname(originalPath)
   const now = new Date()
@@ -27,8 +46,9 @@ function generateTimestampName(originalPath) {
   const hours = String(now.getHours()).padStart(2, '0')
   const minutes = String(now.getMinutes()).padStart(2, '0')
   const seconds = String(now.getSeconds()).padStart(2, '0')
+  const milliseconds = String(now.getMilliseconds()).padStart(3, '0')
 
-  const timestamp = `${year}${month}${day}${hours}${minutes}${seconds}`
+  const timestamp = `${year}${month}${day}${hours}${minutes}${seconds}${milliseconds}`
   return `${timestamp}${ext}`
 }
 
@@ -36,40 +56,50 @@ function generateTimestampName(originalPath) {
 function renameImageFile(filePath) {
   const filename = path.basename(filePath)
   const dir = path.dirname(filePath)
+  const relativePath = path.relative(staticDir, filePath)
 
   // 如果已经是日期时间格式命名，跳过
   if (isTimestampName(filename)) {
     const skipSpinner = ora({
-      text: chalk.gray(`跳过: ${filename} (已是日期时间格式命名)`),
+      text: chalk.gray(`跳过: ${relativePath} (已是日期时间格式命名)`),
       prefixText: '  '
     }).info()
     return
   }
 
-  const newName = generateTimestampName(filePath)
-  const newPath = path.join(dir, newName)
+  let newName = generateTimestampName(filePath)
+  let newPath = path.join(dir, newName)
+  let counter = 1
 
-  // 检查新文件名是否已存在
-  if (fs.existsSync(newPath)) {
-    const conflictSpinner = ora({
-      text: chalk.yellow(`冲突: ${newName} 已存在，延迟1秒重试`),
-      prefixText: '  '
-    }).warn()
-    // 延迟1秒后重新生成时间戳（确保秒数不同）
-    setTimeout(() => renameImageFile(filePath), 1000)
-    return
+  // 如果文件名已存在，添加序号后缀（在扩展名之前）
+  while (fs.existsSync(newPath)) {
+    const ext = path.extname(filePath)
+    const nameWithoutExt = path.parse(newName).name
+    newName = `${nameWithoutExt}_${counter}${ext}`
+    newPath = path.join(dir, newName)
+    counter++
+
+    // 防止无限循环
+    if (counter > 1000) {
+      ora({
+        text: chalk.red(`错误: ${relativePath} - 无法生成唯一文件名`),
+        prefixText: '  '
+      }).fail()
+      return
+    }
   }
 
   const renameSpinner = ora({
-    text: `重命名: ${filename}`,
+    text: `重命名: ${relativePath}`,
     prefixText: '  '
   }).start()
 
   try {
     fs.renameSync(filePath, newPath)
-    renameSpinner.succeed(chalk.green(`重命名: ${filename} ➜ ${newName}`))
+    const newRelativePath = path.relative(staticDir, newPath)
+    renameSpinner.succeed(chalk.green(`重命名: ${relativePath} ➜ ${newRelativePath}`))
   } catch (error) {
-    renameSpinner.fail(chalk.red(`错误: ${filename} - ${error.message}`))
+    renameSpinner.fail(chalk.red(`错误: ${relativePath} - ${error.message}`))
   }
 }
 
@@ -80,32 +110,36 @@ function isImageFile(filename) {
   return imageExts.includes(ext)
 }
 
-// 初始化：扫描现有文件
+// 初始化：递归扫描现有文件
 function scanExistingFiles() {
   console.log()
-  console.log(chalk.cyan('================================================================'))
-  console.log(chalk.cyan.bold('  🔍 扫描现有图片文件'))
-  console.log(chalk.cyan('================================================================'))
+  console.log(chalk.cyan.bold('  🔍 扫描现有图片文件（递归扫描所有子目录）'))
   console.log()
 
-  if (!fs.existsSync(staticDir)) {
-    const createSpinner = ora({
-      text: 'static 目录不存在，创建中...',
-      prefixText: '  '
-    }).start()
-    fs.mkdirSync(staticDir, { recursive: true })
-    createSpinner.succeed(chalk.green('已创建 static 目录'))
-    console.log()
-    return
-  }
-
   const scanSpinner = ora({
-    text: '正在扫描图片文件...',
+    text: '正在递归扫描图片文件...',
     prefixText: '  '
   }).start()
 
-  const files = fs.readdirSync(staticDir)
-  const imageFiles = files.filter(isImageFile)
+  let imageFiles = []
+
+  // 递归扫描目录
+  function scanDirectory(dir) {
+    const entries = fs.readdirSync(dir, { withFileTypes: true })
+
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name)
+
+      if (entry.isDirectory()) {
+        // 递归扫描子目录
+        scanDirectory(fullPath)
+      } else if (entry.isFile() && isImageFile(entry.name)) {
+        imageFiles.push(fullPath)
+      }
+    }
+  }
+
+  scanDirectory(staticDir)
 
   if (imageFiles.length === 0) {
     scanSpinner.info(chalk.gray('未发现图片文件'))
@@ -116,8 +150,7 @@ function scanExistingFiles() {
   scanSpinner.succeed(chalk.green(`发现 ${imageFiles.length} 个图片文件`))
   console.log()
 
-  for (const file of imageFiles) {
-    const filePath = path.join(staticDir, file)
+  for (const filePath of imageFiles) {
     renameImageFile(filePath)
   }
 
@@ -126,16 +159,13 @@ function scanExistingFiles() {
 
 // 启动文件监听
 function startWatcher() {
-  console.log(chalk.cyan('================================================================'))
-  console.log(chalk.cyan.bold('  👀 开始监听 static 目录'))
-  console.log(chalk.cyan('================================================================'))
   console.log()
-  console.log(chalk.blue(`  📂 监听路径: ${staticDir}`))
-  console.log(chalk.blue('  🔄 监听模式: 实时监听'))
-  console.log(chalk.blue('  📸 命名格式: YYYYMMDDHHMMSS (如: 20251107114812.png)'))
+  console.log(chalk.blue.bold('  📂 监听路径: ') + chalk.cyan(staticDir))
+  console.log(chalk.blue('  🔄 监听模式: 实时监听（递归监听所有子目录）'))
+  console.log(chalk.blue('  📸 命名格式: YYYYMMDDHHMMSS + 毫秒 (如: 20251107114812345.png)'))
+  console.log(chalk.gray('               如有冲突会自动添加序号 (如: 20251107114812345_1.png)'))
   console.log()
   console.log(chalk.yellow('  💡 提示: 按 Ctrl+C 停止监听'))
-  console.log(chalk.cyan('================================================================'))
   console.log()
 
   const watcher = chokidar.watch(staticDir, {
@@ -144,15 +174,18 @@ function startWatcher() {
     awaitWriteFinish: {
       stabilityThreshold: 500, // 文件稳定后再处理
       pollInterval: 100
-    }
+    },
+    depth: undefined, // 递归监听所有层级
+    ignorePermissionErrors: true
   })
 
   // 监听新增文件
   watcher.on('add', filePath => {
     const filename = path.basename(filePath)
+    const relativePath = path.relative(staticDir, filePath)
     if (isImageFile(filename)) {
       ora({
-        text: chalk.cyan(`新增文件: ${filename}`),
+        text: chalk.cyan(`新增文件: ${relativePath}`),
         prefixText: '  '
       }).info()
       renameImageFile(filePath)
@@ -162,9 +195,10 @@ function startWatcher() {
   // 监听文件变化（可选）
   watcher.on('change', filePath => {
     const filename = path.basename(filePath)
+    const relativePath = path.relative(staticDir, filePath)
     if (isImageFile(filename)) {
       ora({
-        text: chalk.blue(`文件变化: ${filename}`),
+        text: chalk.blue(`文件变化: ${relativePath}`),
         prefixText: '  '
       }).info()
       // 变化时不重命名，只是通知
@@ -189,10 +223,29 @@ function startWatcher() {
 // 主函数
 function main() {
   console.log()
-  console.log(chalk.cyan.bold('================================================================'))
-  console.log(chalk.cyan.bold('  🖼️  图片文件时间戳重命名工具'))
-  console.log(chalk.cyan.bold('================================================================'))
+  console.log(chalk.bgMagenta.white.bold('                                                              '))
+  console.log(chalk.bgMagenta.white.bold('  🖼️  图片文件时间戳重命名工具                                '))
+  console.log(chalk.bgMagenta.white.bold('                                                              '))
   console.log()
+
+  // 检查目录是否存在
+  if (!fs.existsSync(staticDir)) {
+    console.log(chalk.red.bold('  ❌ 错误: 指定的路径不存在'))
+    console.log(chalk.gray('    ' + staticDir))
+    console.log()
+    console.log(chalk.yellow.bold('  💡 提示: 请检查路径是否正确'))
+    console.log()
+    process.exit(1)
+  }
+
+  // 检查是否是目录
+  const stats = fs.statSync(staticDir)
+  if (!stats.isDirectory()) {
+    console.log(chalk.red.bold('  ❌ 错误: 指定的路径不是目录'))
+    console.log(chalk.gray('    ' + staticDir))
+    console.log()
+    process.exit(1)
+  }
 
   // 先扫描现有文件
   scanExistingFiles()
