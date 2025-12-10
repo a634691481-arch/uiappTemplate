@@ -1,0 +1,36 @@
+{
+  "name": "router",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "uni-config-center": "file:../../../uni_modules/uni-config-center/uniCloud/cloudfunctions/common/uni-config-center",
+    "uni-id": "file:../../../uni_modules/uni-id/uniCloud/cloudfunctions/common/uni-id",
+    "uni-open-bridge-common": "file:../../../uni_modules/uni-open-bridge-common/uniCloud/cloudfunctions/common/uni-open-bridge-common",
+    "vk-unicloud": "file:../../../uni_modules/vk-unicloud/uniCloud/cloudfunctions/common/vk-unicloud"
+  },
+  "private": true,
+  "cloudfunction-config": {
+    "concurrency": 1,
+    "memorySize": 512,
+    "path": "/http/router",
+    "timeout": 60,
+    "triggers": [],
+    "runtime": "Nodejs18",
+    "keepRunningAfterReturn": false
+  },
+  "extensions": {
+    "uni-cloud-verify": {}
+  },
+  "origin-plugin-dev-name": "",
+  "origin-plugin-version": "2.19.6",
+  "plugin-dev-name": "",
+  "plugin-version": "2.19.6"
+}
