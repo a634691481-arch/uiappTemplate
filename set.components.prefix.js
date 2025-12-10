@@ -1,15 +1,22 @@
 const fs = require('fs')
 const path = require('path')
+const chalk = require('chalk')
+const ora = require('ora')
 
 const newPrefix = process.argv[2]
 const dryRun = process.argv.includes('--dry')
 
 if (!newPrefix || typeof newPrefix !== 'string' || !newPrefix.trim()) {
-  console.error('\n❌ 错误: 缺少前缀参数')
-  console.log('\n📖 用法: node set.components.prefix.js <新前缀> [--dry]')
-  console.log('\n示例:')
-  console.log('  node set.components.prefix.js my-component')
-  console.log('  node set.components.prefix.js new-prefix --dry  (预览模式)\n')
+  console.log()
+  console.log(chalk.red.bold('  ❌ 错误: 缺少前缀参数'))
+  console.log()
+  console.log(chalk.cyan.bold('  📖 用法:'))
+  console.log(chalk.gray('    node set.components.prefix.js <新前缀> [--dry]'))
+  console.log()
+  console.log(chalk.cyan.bold('  📚 示例:'))
+  console.log(chalk.green('    node set.components.prefix.js my-component'))
+  console.log(chalk.yellow('    node set.components.prefix.js new-prefix --dry') + chalk.gray('  (预览模式)'))
+  console.log()
   process.exit(1)
 }
 
@@ -19,7 +26,10 @@ const pagesDir = path.join(rootDir, 'pages')
 const pagesJsonPath = path.join(rootDir, 'pages.json')
 
 if (!fs.existsSync(componentsDir)) {
-  console.error('\n❌ 错误: 未找到目录 ' + componentsDir + '\n')
+  console.log()
+  console.log(chalk.red.bold('  ❌ 错误: 未找到目录'))
+  console.log(chalk.gray('    ' + componentsDir))
+  console.log()
   process.exit(1)
 }
 
@@ -43,7 +53,9 @@ for (const entry of entries) {
 }
 
 if (changes.length === 0) {
-  console.log('\n✨ 没有需要变更的文件\n')
+  console.log()
+  console.log(chalk.green('  ✨ 没有需要变更的文件'))
+  console.log()
   process.exit(0)
 }
 
@@ -61,8 +73,10 @@ if (fs.existsSync(pagesJsonPath)) {
     const raw = fs.readFileSync(pagesJsonPath, 'utf8')
     pagesData = JSON.parse(raw)
   } catch (e) {
-    console.error('\n❌ 错误: pages.json 解析失败')
-    console.error(e.message + '\n')
+    console.log()
+    console.log(chalk.red.bold('  ❌ 错误: pages.json 解析失败'))
+    console.log(chalk.gray('    ' + e.message))
+    console.log()
     process.exit(1)
   }
   if (pagesData && pagesData.easycom && pagesData.easycom.custom && typeof pagesData.easycom.custom === 'object') {
@@ -146,104 +160,140 @@ if (fs.existsSync(pagesDir)) {
 }
 
 if (dryRun) {
-  console.log('\n' + '='.repeat(60))
-  console.log('🔍 预览模式 - 以下是将要执行的变更')
-  console.log('='.repeat(60) + '\n')
+  console.log()
+  console.log(chalk.bgCyan.black.bold('                                                              '))
+  console.log(chalk.bgCyan.black.bold('  🔍 预览模式 - 以下是将要执行的变更                          '))
+  console.log(chalk.bgCyan.black.bold('                                                              '))
+  console.log()
 
   if (changes.length > 0) {
-    console.log('📁 组件文件重命名 (' + changes.length + ' 个):')
-    console.log('-'.repeat(60))
+    console.log(chalk.blue.bold('  📁 组件文件重命名') + chalk.gray(` (${changes.length} 个)`))
+    console.log(chalk.gray('  ' + '─'.repeat(58)))
     for (const c of changes) {
-      console.log(`  ${c.oldName} ➜ ${c.newName}`)
+      console.log('    ' + chalk.red(c.oldName) + chalk.yellow(' ➜ ') + chalk.green(c.newName))
     }
     console.log()
   }
 
   if (collision) {
-    console.log('⚠️  文件冲突警告:')
-    console.log('-'.repeat(60))
+    console.log(chalk.yellow.bold('  ⚠️  文件冲突警告'))
+    console.log(chalk.gray('  ' + '─'.repeat(58)))
     for (const c of changes) {
       if (fs.existsSync(c.newPath)) {
-        console.log(`  ❌ 目标文件已存在: ${c.newName}`)
+        console.log('    ' + chalk.red('❌ 目标文件已存在: ') + chalk.yellow(c.newName))
       }
     }
     console.log()
   }
 
   if (pagesUpdated) {
-    console.log('📝 pages.json 配置更新:')
-    console.log('-'.repeat(60))
+    console.log(chalk.magenta.bold('  📝 pages.json 配置更新'))
+    console.log(chalk.gray('  ' + '─'.repeat(58)))
     for (const j of jsonChanges) {
-      console.log(`  easycom.custom:`)
-      console.log(`    ${j.oldKey} ➜ ${j.newKey}`)
-      console.log(`    ${j.oldVal} ➜ ${j.newVal}`)
+      console.log(chalk.gray('    easycom.custom:'))
+      console.log('      ' + chalk.red(j.oldKey) + chalk.yellow(' ➜ ') + chalk.green(j.newKey))
+      console.log('      ' + chalk.red(j.oldVal) + chalk.yellow(' ➜ ') + chalk.green(j.newVal))
     }
     console.log()
   }
 
   if (pageFileChanges.length > 0) {
-    console.log('📄 页面文件内容替换 (' + pageFileChanges.length + ' 个):')
-    console.log('-'.repeat(60))
+    console.log(chalk.cyan.bold('  📄 页面文件内容替换') + chalk.gray(` (${pageFileChanges.length} 个)`))
+    console.log(chalk.gray('  ' + '─'.repeat(58)))
     for (const f of pageFileChanges) {
       const relativePath = path.relative(rootDir, f.file)
-      console.log(`  ${relativePath} (${f.replaced} 处替换)`)
+      console.log('    ' + chalk.cyan(relativePath) + chalk.gray(` (${f.replaced} 处替换)`))
     }
     console.log()
   }
 
-  console.log('='.repeat(60))
-  console.log('💡 提示: 移除 --dry 参数以执行实际变更')
-  console.log('='.repeat(60) + '\n')
+  console.log(chalk.gray('  ' + '═'.repeat(58)))
+  console.log(chalk.yellow.bold('  💡 提示: ') + chalk.white('移除 --dry 参数以执行实际变更'))
+  console.log(chalk.gray('  ' + '═'.repeat(58)))
+  console.log()
   process.exit(0)
 }
 
 if (collision) {
-  console.error('\n' + '='.repeat(60))
-  console.error('❌ 检测到文件冲突')
-  console.error('='.repeat(60))
+  console.log()
+  console.log(chalk.bgRed.white.bold('                                                              '))
+  console.log(chalk.bgRed.white.bold('  ❌ 检测到文件冲突                                            '))
+  console.log(chalk.bgRed.white.bold('                                                              '))
+  console.log()
   for (const c of changes) {
     if (fs.existsSync(c.newPath)) {
-      console.error(`  目标文件已存在: ${c.newName}`)
+      console.log('    ' + chalk.red('❌ 目标文件已存在: ') + chalk.yellow(c.newName))
     }
   }
-  console.error('\n💡 请先处理冲突后再运行\n')
+  console.log()
+  console.log(chalk.yellow.bold('  💡 请先处理冲突后再运行'))
+  console.log()
   process.exit(1)
 }
 
-console.log('\n' + '='.repeat(60))
-console.log('🚀 开始执行组件前缀替换')
-console.log('='.repeat(60) + '\n')
+console.log()
+const mainSpinner = ora({
+  text: chalk.cyan.bold('准备执行组件前缀替换...'),
+  color: 'cyan'
+}).start()
 
-if (changes.length > 0) {
-  console.log('📁 重命名组件文件...')
-  console.log('-'.repeat(60))
-  for (const c of changes) {
-    fs.renameSync(c.oldPath, c.newPath)
-    console.log(`  ✓ ${c.oldName} ➜ ${c.newName}`)
-  }
-  console.log(`\n  共重命名 ${changes.length} 个文件\n`)
-}
-
-if (pagesUpdated && pagesData) {
-  console.log('📝 更新 pages.json 配置...')
-  console.log('-'.repeat(60))
-  fs.writeFileSync(pagesJsonPath, JSON.stringify(pagesData, null, 2) + '\n', 'utf8')
-  for (const j of jsonChanges) {
-    console.log(`  ✓ ${j.oldKey} ➜ ${j.newKey}`)
-  }
+setTimeout(() => {
+  mainSpinner.succeed(chalk.green.bold('开始执行组件前缀替换'))
   console.log()
-}
+  console.log(chalk.bgMagenta.white.bold('                                                              '))
+  console.log(chalk.bgMagenta.white.bold('  🚀 组件前缀替换                                             '))
+  console.log(chalk.bgMagenta.white.bold('                                                              '))
+  console.log()
 
-if (pageFileChanges.length > 0) {
-  console.log('📄 更新页面文件引用...')
-  console.log('-'.repeat(60))
-  for (const f of pageFileChanges) {
-    const relativePath = path.relative(rootDir, f.file)
-    console.log(`  ✓ ${relativePath} (${f.replaced} 处)`)
+  if (changes.length > 0) {
+    const renameSpinner = ora(chalk.blue('重命名组件文件...')).start()
+    console.log()
+    for (const c of changes) {
+      fs.renameSync(c.oldPath, c.newPath)
+      console.log('    ' + chalk.green('✓ ') + chalk.gray(c.oldName) + chalk.yellow(' ➜ ') + chalk.cyan(c.newName))
+    }
+    console.log()
+    renameSpinner.succeed(chalk.green.bold(`✓ 已重命名 ${changes.length} 个文件`))
+    console.log()
   }
-  console.log(`\n  共更新 ${pageFileChanges.length} 个文件\n`)
-}
 
-console.log('='.repeat(60))
-console.log(`✨ 前缀替换完成: ${oldPrefixes.size > 0 ? Array.from(oldPrefixes).join(', ') : '无'} ➜ ${newPrefix}`)
-console.log('='.repeat(60) + '\n')
+  if (pagesUpdated && pagesData) {
+    const jsonSpinner = ora(chalk.magenta('更新 pages.json 配置...')).start()
+    console.log()
+    fs.writeFileSync(pagesJsonPath, JSON.stringify(pagesData, null, 2) + '\n', 'utf8')
+    for (const j of jsonChanges) {
+      console.log('    ' + chalk.green('✓ ') + chalk.gray(j.oldKey) + chalk.yellow(' ➜ ') + chalk.cyan(j.newKey))
+    }
+    console.log()
+    jsonSpinner.succeed(chalk.green.bold('✓ 已更新 pages.json 配置'))
+    console.log()
+  }
+
+  if (pageFileChanges.length > 0) {
+    const pageSpinner = ora(chalk.cyan('更新页面文件引用...')).start()
+    console.log()
+    for (const f of pageFileChanges) {
+      const relativePath = path.relative(rootDir, f.file)
+      console.log('    ' + chalk.green('✓ ') + chalk.cyan(relativePath) + chalk.gray(` (${f.replaced} 处)`))
+    }
+    console.log()
+    pageSpinner.succeed(chalk.green.bold(`✓ 已更新 ${pageFileChanges.length} 个页面文件`))
+    console.log()
+  }
+
+  console.log(chalk.gray('  ' + '═'.repeat(58)))
+  console.log()
+  const oldPrefixList = oldPrefixes.size > 0 ? Array.from(oldPrefixes).join(', ') : '无'
+  console.log('  ' + chalk.green.bold('✨ 前缀替换完成! '))
+  console.log(
+    '  ' +
+      chalk.gray('原前缀: ') +
+      chalk.red(oldPrefixList) +
+      chalk.yellow(' ➜ ') +
+      chalk.gray('新前缀: ') +
+      chalk.green.bold(newPrefix)
+  )
+  console.log()
+  console.log(chalk.gray('  ' + '═'.repeat(58)))
+  console.log()
+}, 500)
