@@ -5,7 +5,11 @@ const newPrefix = process.argv[2]
 const dryRun = process.argv.includes('--dry')
 
 if (!newPrefix || typeof newPrefix !== 'string' || !newPrefix.trim()) {
-  console.error('用法: node set.components.prefix.js <新前缀> [--dry]')
+  console.error('\n❌ 错误: 缺少前缀参数')
+  console.log('\n📖 用法: node set.components.prefix.js <新前缀> [--dry]')
+  console.log('\n示例:')
+  console.log('  node set.components.prefix.js my-component')
+  console.log('  node set.components.prefix.js new-prefix --dry  (预览模式)\n')
   process.exit(1)
 }
 
@@ -15,7 +19,7 @@ const pagesDir = path.join(rootDir, 'pages')
 const pagesJsonPath = path.join(rootDir, 'pages.json')
 
 if (!fs.existsSync(componentsDir)) {
-  console.error('未找到目录: ' + componentsDir)
+  console.error('\n❌ 错误: 未找到目录 ' + componentsDir + '\n')
   process.exit(1)
 }
 
@@ -39,7 +43,8 @@ for (const entry of entries) {
 }
 
 if (changes.length === 0) {
-  console.log('没有可变更的文件')
+  console.log('\n✨ 没有需要变更的文件\n')
+  process.exit(0)
 }
 
 let collision = false
@@ -56,7 +61,8 @@ if (fs.existsSync(pagesJsonPath)) {
     const raw = fs.readFileSync(pagesJsonPath, 'utf8')
     pagesData = JSON.parse(raw)
   } catch (e) {
-    console.error('pages.json 解析失败')
+    console.error('\n❌ 错误: pages.json 解析失败')
+    console.error(e.message + '\n')
     process.exit(1)
   }
   if (pagesData && pagesData.easycom && pagesData.easycom.custom && typeof pagesData.easycom.custom === 'object') {
@@ -106,21 +112,13 @@ if (fs.existsSync(pagesDir)) {
         let content = fs.readFileSync(full, 'utf8')
         let replaced = 0
         for (const p of oldPrefixes) {
-          // 仅在 <template> 块中替换组件标签前缀
-          const tplStart = content.indexOf('<template')
-          const tplEnd = content.indexOf('</template>')
-          if (tplStart !== -1 && tplEnd !== -1 && tplEnd > tplStart) {
-            const tplOpenEnd = content.indexOf('>', tplStart)
-            const before = content.slice(0, tplOpenEnd + 1)
-            const tplInner = content.slice(tplOpenEnd + 1, tplEnd)
-            const afterTpl = content.slice(tplEnd)
-            const tagRe = new RegExp(`(<\\/?)${escapeRegExp(p)}-([A-Za-z0-9_-]+)`, 'g')
-            const newTplInner = tplInner.replace(tagRe, (m, pre, comp) => {
-              replaced++
-              return `${pre}${newPrefix}-${comp}`
-            })
-            content = before + newTplInner + afterTpl
-          }
+          // 替换所有组件标签（开始标签、结束标签、自闭合标签）
+          // 匹配: <tasi-xxx、</tasi-xxx、<tasi-xxx/>
+          const tagRe = new RegExp(`<(\\/?)${escapeRegExp(p)}-([A-Za-z0-9_-]+)`, 'g')
+          content = content.replace(tagRe, (m, slash, comp) => {
+            replaced++
+            return `<${slash}${newPrefix}-${comp}`
+          })
 
           // 在整个文件中更新 import 路径（脚本部分通常）
           const importRe = new RegExp(`@\\/components\\/${escapeRegExp(p)}-([A-Za-z0-9_-]+)\\.vue`, 'g')
@@ -148,44 +146,104 @@ if (fs.existsSync(pagesDir)) {
 }
 
 if (dryRun) {
-  console.log('Dry-run 预览变更:')
-  for (const c of changes) {
-    console.log(`${c.oldName} -> ${c.newName}`)
+  console.log('\n' + '='.repeat(60))
+  console.log('🔍 预览模式 - 以下是将要执行的变更')
+  console.log('='.repeat(60) + '\n')
+
+  if (changes.length > 0) {
+    console.log('📁 组件文件重命名 (' + changes.length + ' 个):')
+    console.log('-'.repeat(60))
+    for (const c of changes) {
+      console.log(`  ${c.oldName} ➜ ${c.newName}`)
+    }
+    console.log()
   }
+
   if (collision) {
+    console.log('⚠️  文件冲突警告:')
+    console.log('-'.repeat(60))
     for (const c of changes) {
       if (fs.existsSync(c.newPath)) {
-        console.log(`冲突: 目标已存在 ${c.newName}`)
+        console.log(`  ❌ 目标文件已存在: ${c.newName}`)
       }
     }
+    console.log()
   }
+
   if (pagesUpdated) {
+    console.log('📝 pages.json 配置更新:')
+    console.log('-'.repeat(60))
     for (const j of jsonChanges) {
-      console.log(`pages.json easycom custom: ${j.oldKey} -> ${j.newKey}`)
-      console.log(`pages.json easycom custom: ${j.oldVal} -> ${j.newVal}`)
+      console.log(`  easycom.custom:`)
+      console.log(`    ${j.oldKey} ➜ ${j.newKey}`)
+      console.log(`    ${j.oldVal} ➜ ${j.newVal}`)
     }
+    console.log()
   }
-  if (pageFileChanges.length) {
+
+  if (pageFileChanges.length > 0) {
+    console.log('📄 页面文件内容替换 (' + pageFileChanges.length + ' 个):')
+    console.log('-'.repeat(60))
     for (const f of pageFileChanges) {
-      console.log(`页面: ${path.relative(rootDir, f.file)} 替换次数: ${f.replaced}`)
+      const relativePath = path.relative(rootDir, f.file)
+      console.log(`  ${relativePath} (${f.replaced} 处替换)`)
     }
+    console.log()
   }
+
+  console.log('='.repeat(60))
+  console.log('💡 提示: 移除 --dry 参数以执行实际变更')
+  console.log('='.repeat(60) + '\n')
   process.exit(0)
 }
 
 if (collision) {
-  console.error('检测到目标文件已存在的冲突，已终止。请处理冲突后再运行。')
+  console.error('\n' + '='.repeat(60))
+  console.error('❌ 检测到文件冲突')
+  console.error('='.repeat(60))
+  for (const c of changes) {
+    if (fs.existsSync(c.newPath)) {
+      console.error(`  目标文件已存在: ${c.newName}`)
+    }
+  }
+  console.error('\n💡 请先处理冲突后再运行\n')
   process.exit(1)
 }
 
-for (const c of changes) {
-  fs.renameSync(c.oldPath, c.newPath)
-  console.log(`${c.oldName} -> ${c.newName}`)
+console.log('\n' + '='.repeat(60))
+console.log('🚀 开始执行组件前缀替换')
+console.log('='.repeat(60) + '\n')
+
+if (changes.length > 0) {
+  console.log('📁 重命名组件文件...')
+  console.log('-'.repeat(60))
+  for (const c of changes) {
+    fs.renameSync(c.oldPath, c.newPath)
+    console.log(`  ✓ ${c.oldName} ➜ ${c.newName}`)
+  }
+  console.log(`\n  共重命名 ${changes.length} 个文件\n`)
 }
 
 if (pagesUpdated && pagesData) {
+  console.log('📝 更新 pages.json 配置...')
+  console.log('-'.repeat(60))
   fs.writeFileSync(pagesJsonPath, JSON.stringify(pagesData, null, 2) + '\n', 'utf8')
-  console.log('已更新 pages.json easycom custom 映射')
+  for (const j of jsonChanges) {
+    console.log(`  ✓ ${j.oldKey} ➜ ${j.newKey}`)
+  }
+  console.log()
 }
 
-console.log(`已完成前缀替换为: ${newPrefix}`)
+if (pageFileChanges.length > 0) {
+  console.log('📄 更新页面文件引用...')
+  console.log('-'.repeat(60))
+  for (const f of pageFileChanges) {
+    const relativePath = path.relative(rootDir, f.file)
+    console.log(`  ✓ ${relativePath} (${f.replaced} 处)`)
+  }
+  console.log(`\n  共更新 ${pageFileChanges.length} 个文件\n`)
+}
+
+console.log('='.repeat(60))
+console.log(`✨ 前缀替换完成: ${oldPrefixes.size > 0 ? Array.from(oldPrefixes).join(', ') : '无'} ➜ ${newPrefix}`)
+console.log('='.repeat(60) + '\n')

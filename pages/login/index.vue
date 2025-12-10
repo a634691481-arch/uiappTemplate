@@ -1,6 +1,6 @@
 <template>
   <view>
-    <tasi-paging
+    <yy-paging
       v-model="state.dataList"
       @query="queryList"
       ref="paging"
@@ -18,13 +18,13 @@
         </u-navbar>
       </template>
       <template #empty>
-        <tasi-empty></tasi-empty>
+        <yy-empty></yy-empty>
       </template>
       <template #loadingMoreNoMore>
-        <tasi-nomore></tasi-nomore>
+        <yy-nomore></yy-nomore>
       </template>
       <view class="flex flex-col px-3"> </view>
-    </tasi-paging>
+    </yy-paging>
     <!--  -->
     <!--  -->
     <!--  -->
