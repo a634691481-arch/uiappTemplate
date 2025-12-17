@@ -18,6 +18,28 @@ const resolve = p => {
 export default defineConfig({
   plugins: [
     autoPagesJson(),
+    // autoPagesJson({
+    //     tabBar: 'tab-bar',
+    //     entrance: 'pages',
+    //     autoAormat: false,
+    //     customTabBar: true,
+    //     subPackages: true || ['pages/home', 'home'],
+    //     pageConfig: {
+    //         disableScroll: true,
+    //         enablePullDownRefresh: false,
+    //         "app-plus": { bounce: "none" }
+    //     },
+    //     tabBarPageConfig: {
+    //         disableScroll: true,
+    //         enablePullDownRefresh: false,
+    //         "app-plus": { bounce: "none" }
+    //     },
+    //     subPackagesConfig: {
+    //         disableScroll: true,
+    //         enablePullDownRefresh: false,
+    //         "app-plus": { bounce: "none" }
+    //     }
+    // })
     codeInspectorPlugin({
       bundler: 'vite',
       // showSwitch: true,

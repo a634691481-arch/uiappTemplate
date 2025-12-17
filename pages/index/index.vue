@@ -36,6 +36,9 @@
           <view @click="playAudio" class="inline-flex px-3 py-1 bg-green-500 rounded-full">
             <text class="text-base text-white">播放</text>
           </view>
+          <view @click="pauseAudio" class="inline-flex px-3 py-1 bg-green-500 rounded-full">
+            <text class="text-base text-white">暂停</text>
+          </view>
         </view>
       </view>
     </yy-paging>
@@ -72,6 +75,7 @@
       paging.value?.complete([1])
     }, 1000)
   }
+  // 获取定位
   function getLocation() {
     vk.showLoading({
       title: '定位中...'
@@ -91,6 +95,7 @@
       }
     })
   }
+  //  播放音频
   function playAudio() {
     const innerAudioContext = uni.createInnerAudioContext()
     innerAudioContext.autoplay = true
@@ -103,6 +108,7 @@
       console.log(res.errCode)
     })
   }
+  function pauseAudio() {}
 </script>
 
 <style lang="scss" scoped></style>
