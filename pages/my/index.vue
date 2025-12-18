@@ -1,6 +1,6 @@
 <template>
   <view>
-    <!-- <yy-paging
+    <yy-paging
       v-model="state.dataList"
       @query="queryList"
       ref="paging"
@@ -14,7 +14,6 @@
           :title="state.title"
           :border-bottom="false"
           title-color="#fff"
-          isBack
           backIconColor="#fff"
         >
         </u-navbar>
@@ -25,9 +24,11 @@
       <template #loadingMoreNoMore>
         <yy-nomore></yy-nomore>
       </template>
+      <template #bottom>
+        <yy-tabbar></yy-tabbar>
+      </template>
       <view class="flex flex-col px-3"> </view>
-    </yy-paging> -->
-    <web-view src="https://static-mp-7d13aaae-6ab7-4da9-b4f0-115c02a1486f.next.bspapp.com/#/" />
+    </yy-paging>
     <!--  -->
     <!--  -->
     <!--  -->
@@ -39,8 +40,7 @@
   const state = ref({
     isScroll: false,
     dataList: [],
-    title: '首4444444444444页',
-    url: 'https://static-mp-7d13aaae-6ab7-4da9-b4f0-115c02a1486f.next.bspapp.com/#/'
+    title: '首页'
   })
 
   // 组件引用
@@ -51,11 +51,11 @@
   onLoad(options => {
     console.log('🚀 ~ :55 ~ options:', options)
   })
-
+  // 滚动事件
   function scroll(e) {
     state.value.isScroll = e.detail.scrollTop > 0
   }
-
+  // 列表查询
   function queryList(page, limit) {
     console.log('🚀 ~ :58 ~ queryList ~ page, limit:', page, limit)
     setTimeout(() => {

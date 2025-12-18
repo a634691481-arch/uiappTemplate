@@ -25,9 +25,9 @@
       <template #loadingMoreNoMore>
         <yy-nomore></yy-nomore>
       </template>
-	  <template #bottom>
-		  <yy-tabbar></yy-tabbar>
-	  </template>
+      <template #bottom>
+        <yy-tabbar></yy-tabbar>
+      </template>
       <view class="flex flex-col px-3"> </view>
     </yy-paging>
     <!--  -->
@@ -52,11 +52,11 @@
   onLoad(options => {
     console.log('🚀 ~ :55 ~ options:', options)
   })
-
+  // 滚动事件
   function scroll(e) {
     state.value.isScroll = e.detail.scrollTop > 0
   }
-
+  // 列表查询
   function queryList(page, limit) {
     console.log('🚀 ~ :58 ~ queryList ~ page, limit:', page, limit)
     setTimeout(() => {

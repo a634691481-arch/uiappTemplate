@@ -14,7 +14,6 @@
           :title="state.title"
           :border-bottom="false"
           title-color="#fff"
-          isBack
           backIconColor="#fff"
         >
         </u-navbar>
@@ -29,22 +28,24 @@
         <yy-tabbar></yy-tabbar>
       </template>
       <view class="flex flex-col p-3">
-        <view>
-          <view @click="getLocation" class="inline-flex px-3 py-1 bg-green-500 rounded-full">
-            <text class="text-base text-white">获取定位</text>
+        <!-- 按钮 -->
+        <view class="px-6 mt-6 w-full">
+          <view
+            class="active:opacity-90 flex justify-center items-center py-3 w-full rounded-full transition-all"
+            style="
+              background: linear-gradient(135deg, #18c9d9 0%, #0eb0c0 100%);
+              box-shadow: 0 8px 16px -4px rgba(24, 201, 217, 0.4);
+            "
+            @click="openWeapp"
+          >
+            <u-icon name="miniprogram-fill" color="#fff" size="36"></u-icon>
+            <text class="ml-2 text-lg font-bold text-white">跳转到微信小程序</text>
+            <u-icon name="arrow-right" color="#fff" size="24" class="ml-1 opacity-80"></u-icon>
           </view>
-          <view @click="playAudio" class="inline-flex px-3 py-1 bg-green-500 rounded-full">
-            <text class="text-base text-white">播放</text>
-          </view>
-          <view @click="pauseAudio" class="inline-flex px-3 py-1 bg-green-500 rounded-full">
-            <text class="text-base text-white">暂停</text>
-          </view>
+          <view class="mt-3 text-xs text-center text-gray-400"> 点击上方按钮唤起小程序 </view>
         </view>
       </view>
     </yy-paging>
-    <!--  -->
-    <!--  -->
-    <!--  -->
   </view>
 </template>
 
@@ -63,6 +64,7 @@
   // 页面生命周期（Uni-App）
   onLoad(options => {
     console.log('🚀 ~ :55 ~ options:', options)
+    // openWeapp()
   })
 
   function scroll(e) {
@@ -75,40 +77,11 @@
       paging.value?.complete([1])
     }, 1000)
   }
-  // 获取定位
-  function getLocation() {
-    vk.showLoading({
-      title: '定位中...'
-    })
-    uni.getLocation({
-      type: 'gcj02',
-      success: res => {
-        console.log('🚀 ~ :73 ~ getLocation ~ res:', res)
-        vk.alert(res)
-      },
-      fail: err => {
-        console.log('🚀 ~ :80 ~ getLocation ~ err:', err)
-        vk.alert(err)
-      },
-      complete: () => {
-        vk.hideLoading()
-      }
-    })
+
+  function openWeapp() {
+    const scheme = 'weixin://dl/business/?appid=wx02245e9a1237f40c&path=pages/home/index'
+    window.location.href = scheme
   }
-  //  播放音频
-  function playAudio() {
-    const innerAudioContext = uni.createInnerAudioContext()
-    innerAudioContext.autoplay = true
-    innerAudioContext.src = 'https://whc.aicisl.org.cn/chat/wuhouci/audio/通用导览1_导览图.mp3'
-    innerAudioContext.onPlay(() => {
-      console.log('开始播放')
-    })
-    innerAudioContext.onError(res => {
-      console.log(res.errMsg)
-      console.log(res.errCode)
-    })
-  }
-  function pauseAudio() {}
 </script>
 
 <style lang="scss" scoped></style>

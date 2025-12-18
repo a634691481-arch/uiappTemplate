@@ -10,19 +10,19 @@
           {
             iconPath: '/static/tabbar/20251209154656.png',
             selectedIconPath: '/static/tabbar/20251209154657.png',
-            text: '数据33',
+            text: '数据',
             pagePath: '/pages/index/index'
           },
           {
             iconPath: '/static/tabbar/20251209154658.png',
             selectedIconPath: '/static/tabbar/20251209154659.png',
-            text: '33',
+            text: '数据',
             pagePath: '/pages/promotion/index'
           },
           {
             iconPath: '/static/tabbar/20251209154700.png',
             selectedIconPath: '/static/tabbar/20251209154703.png',
-            text: '我的33',
+            text: '数据',
             pagePath: '/pages/my/index'
           }
         ],

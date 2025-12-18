@@ -1,90 +1,84 @@
 {
-  "easycom": {
-    "autoscan": true,
-    "custom": {
-      "^yy-(.*)": "@/components/yy-$1.vue"
-    }
-  },
-  "pages": [
-    {
-      "path": "pages/index/index",
-      "style": {
-        "disableScroll": true,
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/error/404/404",
-      "style": {
-        "disableScroll": true,
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/error/404",
-      "style": {
-        "disableScroll": true,
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/login/index",
-      "style": {
-        "disableScroll": true,
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/my/index",
-      "style": {
-        "disableScroll": true,
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/test/test",
-      "style": {
-        "disableScroll": true,
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/promotion/index",
-      "style": {
-        "disableScroll": true,
-        "enablePullDownRefresh": false
-      }
-    }
-  ],
-  "globalStyle": {
-    "navigationBarTextStyle": "black",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationStyle": "custom",
-    "navigationBarTitleText": "它思乐游"
-  },
-  "tabBar": {
-    "color": "#666666",
-    "selectedColor": "#18C9D9",
-    "borderStyle": "white",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "iconPath": "static/tabbar/20251107162354.png",
-        "selectedIconPath": "static/tabbar/20251107162354.png",
-        "text": "数据"
-      },
-      {
-        "pagePath": "pages/promotion/index",
-        "iconPath": "static/tabbar/20251107162354.png",
-        "selectedIconPath": "static/tabbar/20251107162354.png",
-        "text": "推广码"
-      },
-      {
-        "pagePath": "pages/my/index",
-        "iconPath": "static/tabbar/20251107162354.png",
-        "selectedIconPath": "static/tabbar/20251107162354.png",
-        "text": "我的"
-      }
-    ]
-  }
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^yy-(.*)": "@/components/yy-$1.vue"
+		}
+	},
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"disableScroll": true,
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/error/404/404",
+			"style": {
+				"disableScroll": true,
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/error/404",
+			"style": {
+				"disableScroll": true,
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/login/index",
+			"style": {
+				"disableScroll": true,
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"disableScroll": true,
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/test/test",
+			"style": {
+				"disableScroll": true,
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/index/list",
+			"style": {
+				"disableScroll": true,
+				"enablePullDownRefresh": false
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarBackgroundColor": "#fff",
+		"navigationStyle": "custom",
+		"navigationBarTitleText": "它思乐游"
+	},
+	"tabBar": {
+		"color": "#666666",
+		"selectedColor": "#18C9D9",
+		"borderStyle": "white",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/my/index",
+				"text": "我的"
+			},
+			{
+				"pagePath": "pages/test/test",
+				"text": "测试"
+			}
+		]
+	}
 }
