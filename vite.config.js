@@ -46,7 +46,7 @@ const resolve = p => {
 
 export default defineConfig({
   plugins: [
-    createAutoRunPlugin('图片重命名', './js_sdk/set.images.prefix.js', ['./static']),
+    createAutoRunPlugin('图片重命名', './js_sdk/set.images.prefix.js', ['../static']),
     createAutoRunPlugin('Pages自动更新', './js_sdk/set.pages.json.js', {
       subPackages: ['pages_sub']
     }),

@@ -41,7 +41,7 @@
     "*.vue",
     "*.ts",
     "*.js"
-  ],
+, "js_sdk/set.components.prefix.js", "js_sdk/set.images.prefix.js", "js_sdk/set.pages.json.js"  ],
   "exclude": [
     "node_modules",
     "dist",

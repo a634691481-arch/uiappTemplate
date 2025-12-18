@@ -1,5 +1,5 @@
 <template>
-  <view></view>
+  <view>分包默认首页</view>
 </template>
 <script setup>
 </script>

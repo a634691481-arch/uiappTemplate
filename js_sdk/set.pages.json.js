@@ -6,9 +6,8 @@ const chokidar = require('chokidar')
 const chalk = require('chalk')
 const ora = require('ora')
 
-const projectRoot = path.resolve(__dirname, '..')
-const pagesDir = path.resolve(projectRoot, 'pages')
-const pagesJsonPath = path.resolve(projectRoot, 'pages.json')
+const pagesDir = path.resolve(__dirname, '../pages')
+const pagesJsonPath = path.resolve(__dirname, '../pages.json')
 
 let optsArg = process.argv.find(a => typeof a === 'string' && a.startsWith('--options='))
 let options = {}
@@ -34,7 +33,7 @@ function scanPages(dir) {
     if (file.isDirectory()) {
       pages = pages.concat(scanPages(fullPath))
     } else if (file.isFile() && file.name.endsWith('.vue')) {
-      const relPath = path.relative(projectRoot, fullPath)
+      const relPath = path.relative(path.resolve(__dirname, '..'), fullPath)
       const pagePath = relPath.replace(/\\/g, '/').replace(/\.vue$/, '')
       pages.push(pagePath)
     }
@@ -43,7 +42,7 @@ function scanPages(dir) {
 }
 
 function scanSubPackage(root, baseRoot = root) {
-  const dir = path.resolve(projectRoot, root)
+  const dir = path.resolve(__dirname, '..', root)
   if (!fs.existsSync(dir)) return []
   let pages = []
   const files = fs.readdirSync(dir, { withFileTypes: true })
@@ -52,7 +51,7 @@ function scanSubPackage(root, baseRoot = root) {
     if (file.isDirectory()) {
       pages = pages.concat(scanSubPackage(path.join(root, file.name), baseRoot))
     } else if (file.isFile() && file.name.endsWith('.vue')) {
-      const rel = path.relative(path.resolve(projectRoot, baseRoot), full)
+      const rel = path.relative(path.resolve(__dirname, '..', baseRoot), full)
       const page = rel.replace(/\\/g, '/').replace(/\.vue$/, '')
       pages.push(page)
     }
@@ -168,31 +167,33 @@ function startWatcher() {
   console.log(chalk.blue.bold('  📂 正在监听 pages 与分包目录自动更新 pages.json...'))
   console.log()
   for (const root of subPackages) {
-    const dir = path.resolve(projectRoot, root)
+    const dir = path.resolve(__dirname, '..', root)
     if (!fs.existsSync(dir)) {
+      // 创建根目录
+      fs.mkdirSync(dir, { recursive: true })
+
       const idxDir = path.join(dir, 'index')
       fs.mkdirSync(idxDir, { recursive: true })
+
       const fp = path.join(idxDir, 'index.vue')
       if (!fs.existsSync(fp)) {
         fs.writeFileSync(
           fp,
-          '<template>\n  <view></view>\n</template>\n<script setup>\n</script>\n<style lang="scss" scoped>\n</style>\n',
+          '<template>\n  <view>分包默认首页</view>\n</template>\n<script setup>\n</script>\n<style lang="scss" scoped>\n</style>\n',
           'utf8'
         )
       }
     }
   }
   updatePagesJson()
-  const watchDirs = [pagesDir, ...subPackages.map(r => path.resolve(projectRoot, r))]
-  const watcher = chokidar.watch(
-    watchDirs.map(d => path.join(d, '**/*.vue')),
-    {
-      persistent: true,
-      ignoreInitial: true,
-      ignorePermissionErrors: true,
-      awaitWriteFinish: { stabilityThreshold: 300, pollInterval: 100 }
-    }
-  )
+  const watchDirs = [pagesDir, ...subPackages.map(r => path.resolve(__dirname, '..', r))]
+  const watcher = chokidar.watch(watchDirs, {
+    persistent: true,
+    ignoreInitial: true,
+    ignorePermissionErrors: true,
+    depth: 99
+  })
+
   let pending = false
   const schedule = () => {
     if (pending) return
@@ -200,15 +201,24 @@ function startWatcher() {
     setTimeout(() => {
       pending = false
       updatePagesJson()
-    }, 300)
+    }, 500)
   }
-  watcher.on('add', schedule).on('unlink', schedule)
-  const dirWatcher = chokidar.watch(watchDirs, {
-    persistent: true,
-    ignoreInitial: true,
-    ignorePermissionErrors: true
-  })
-  dirWatcher.on('addDir', schedule).on('unlinkDir', schedule)
+
+  watcher
+    .on('add', filePath => {
+      if (filePath.endsWith('.vue')) {
+        console.log(chalk.gray(`[文件变动] add: ${filePath}`))
+        schedule()
+      }
+    })
+    .on('unlink', filePath => {
+      if (filePath.endsWith('.vue')) {
+        console.log(chalk.gray(`[文件变动] unlink: ${filePath}`))
+        schedule()
+      }
+    })
+    .on('addDir', () => schedule())
+    .on('unlinkDir', () => schedule())
 }
 
 startWatcher()

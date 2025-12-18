@@ -164,20 +164,16 @@ function startWatcher() {
   console.log(chalk.yellow('  💡 提示: 按 Ctrl+C 停止监听'))
   console.log()
 
-  const patterns = ['**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.gif', '**/*.bmp', '**/*.webp', '**/*.svg', '**/*.ico']
-  const watcher = chokidar.watch(
-    patterns.map(p => path.join(staticDir, p)),
-    {
-      persistent: true,
-      ignoreInitial: true, // 忽略初始扫描
-      awaitWriteFinish: {
-        stabilityThreshold: 500, // 文件稳定后再处理
-        pollInterval: 100
-      },
-      depth: undefined, // 递归监听所有层级
-      ignorePermissionErrors: true
-    }
-  )
+  const watcher = chokidar.watch(staticDir, {
+    persistent: true,
+    ignoreInitial: true, // 忽略初始扫描
+    awaitWriteFinish: {
+      stabilityThreshold: 500, // 文件稳定后再处理
+      pollInterval: 100
+    },
+    depth: 99, // 递归监听所有层级
+    ignorePermissionErrors: true
+  })
 
   // 监听新增文件
   watcher.on('add', filePath => {
