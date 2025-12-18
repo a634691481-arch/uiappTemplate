@@ -111,7 +111,6 @@
     "@formkit/auto-animate": "^0.9.0",
     "chokidar": "^5.0.0",
     "crypto-js": "^4.2.0",
-    "js-md5": "^0.8.3",
-    "mp-painter": "^1.0.1"
+    "js-md5": "^0.8.3"
   }
 }
