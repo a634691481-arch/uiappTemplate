@@ -8,15 +8,24 @@ import { UnifiedViteWeappTailwindcssPlugin as uvwt } from 'weapp-tailwindcss/vit
 import { codeInspectorPlugin } from 'code-inspector-plugin'
 
 // 辅助函数：创建自动运行脚本的 Vite 插件
-const createAutoRunPlugin = (name, scriptPath, args = []) => {
+const createAutoRunPlugin = (name, scriptPath, argsOrOptions = []) => {
   let hasStarted = false
+  const buildArgs = () => {
+    if (Array.isArray(argsOrOptions)) return [scriptPath, ...argsOrOptions]
+    try {
+      const b64 = Buffer.from(JSON.stringify(argsOrOptions)).toString('base64')
+      return [scriptPath, `--options=${b64}`]
+    } catch {
+      return [scriptPath]
+    }
+  }
   return {
     name: `auto-run-${name}`,
     configureServer() {
       if (hasStarted) return
       hasStarted = true
       console.log(`🚀 启动 ${name} 服务...`)
-      const child = spawn('node', [scriptPath, ...args], {
+      const child = spawn('node', buildArgs(), {
         stdio: 'inherit',
         shell: true,
         cwd: __dirname
@@ -38,8 +47,10 @@ const resolve = p => {
 
 export default defineConfig({
   plugins: [
-    createAutoRunPlugin('图片重命名', './set.images.prefix.js', ['./static']),
-    createAutoRunPlugin('Pages自动更新', './set.pages.json.js'),
+    createAutoRunPlugin('图片重命名', '/js_sdk/set.images.prefix.js', ['/static']),
+    createAutoRunPlugin('Pages自动更新', '/js_sdk/set.pages.json.js', {
+      subPackages: ['pages_sub', 'pages_subb', 'pages_subbb', 'pages_subbbb88']
+    }),
     codeInspectorPlugin({
       bundler: 'vite',
       // showSwitch: true,

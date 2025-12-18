@@ -28,7 +28,6 @@ if (!targetPath) {
 // 将相对路径转换为绝对路径
 const staticDir = path.isAbsolute(targetPath) ? targetPath : path.resolve(__dirname, targetPath)
 
-// 检查是否已经是日期时间格式命名（YYYYMMDDHHMMSS 或 YYYYMMDDHHMMSS + 毫秒，14-17位数字，可能带下划线序号）
 function isTimestampName(filename) {
   const nameWithoutExt = path.parse(filename).name
   // 匹配 20251107114812 或 20251210161451123 或 20251210161451123_1 这种格式
@@ -52,7 +51,6 @@ function generateTimestampName(originalPath) {
   return `${timestamp}${ext}`
 }
 
-// 重命名图片文件
 function renameImageFile(filePath) {
   const filename = path.basename(filePath)
   const dir = path.dirname(filePath)
@@ -60,10 +58,7 @@ function renameImageFile(filePath) {
 
   // 如果已经是日期时间格式命名，跳过
   if (isTimestampName(filename)) {
-    const skipSpinner = ora({
-      text: chalk.gray(`跳过: ${relativePath} (已是日期时间格式命名)`),
-      prefixText: '  '
-    }).info()
+    console.log(chalk.gray(`  跳过: ${relativePath}`))
     return
   }
 
@@ -151,8 +146,9 @@ function scanExistingFiles() {
   console.log()
 
   for (const filePath of imageFiles) {
-    renameImageFile(filePath)
+    renameQueue.add(filePath)
   }
+  scheduleProcess()
 
   console.log()
 }
@@ -168,27 +164,29 @@ function startWatcher() {
   console.log(chalk.yellow('  💡 提示: 按 Ctrl+C 停止监听'))
   console.log()
 
-  const watcher = chokidar.watch(staticDir, {
-    persistent: true,
-    ignoreInitial: true, // 忽略初始扫描
-    awaitWriteFinish: {
-      stabilityThreshold: 500, // 文件稳定后再处理
-      pollInterval: 100
-    },
-    depth: undefined, // 递归监听所有层级
-    ignorePermissionErrors: true
-  })
+  const patterns = ['**/*.jpg', '**/*.jpeg', '**/*.png', '**/*.gif', '**/*.bmp', '**/*.webp', '**/*.svg', '**/*.ico']
+  const watcher = chokidar.watch(
+    patterns.map(p => path.join(staticDir, p)),
+    {
+      persistent: true,
+      ignoreInitial: true, // 忽略初始扫描
+      awaitWriteFinish: {
+        stabilityThreshold: 500, // 文件稳定后再处理
+        pollInterval: 100
+      },
+      depth: undefined, // 递归监听所有层级
+      ignorePermissionErrors: true
+    }
+  )
 
   // 监听新增文件
   watcher.on('add', filePath => {
     const filename = path.basename(filePath)
     const relativePath = path.relative(staticDir, filePath)
     if (isImageFile(filename)) {
-      ora({
-        text: chalk.cyan(`新增文件: ${relativePath}`),
-        prefixText: '  '
-      }).info()
-      renameImageFile(filePath)
+      console.log(chalk.cyan(`  新增文件: ${relativePath}`))
+      renameQueue.add(filePath)
+      scheduleProcess()
     }
   })
 
@@ -197,10 +195,7 @@ function startWatcher() {
     const filename = path.basename(filePath)
     const relativePath = path.relative(staticDir, filePath)
     if (isImageFile(filename)) {
-      ora({
-        text: chalk.blue(`文件变化: ${relativePath}`),
-        prefixText: '  '
-      }).info()
+      console.log(chalk.blue(`  文件变化: ${relativePath}`))
       // 变化时不重命名，只是通知
     }
   })
@@ -218,6 +213,35 @@ function startWatcher() {
     prefixText: '  '
   }).succeed()
   console.log()
+}
+
+const renameQueue = new Set()
+let processing = false
+let pendingSchedule = false
+function processQueue() {
+  if (processing) return
+  processing = true
+  try {
+    const items = Array.from(renameQueue)
+    renameQueue.clear()
+    for (const fp of items) {
+      try {
+        renameImageFile(fp)
+      } catch (e) {
+        console.log(chalk.red(`  重命名失败: ${fp} - ${e.message}`))
+      }
+    }
+  } finally {
+    processing = false
+  }
+}
+function scheduleProcess() {
+  if (pendingSchedule) return
+  pendingSchedule = true
+  setTimeout(() => {
+    pendingSchedule = false
+    processQueue()
+  }, 300)
 }
 
 // 主函数
