@@ -52,19 +52,15 @@
   "subPackages": [
     {
       "root": "pages_sub",
-      "pages": []
-    },
-    {
-      "root": "pages_subb",
-      "pages": []
-    },
-    {
-      "root": "pages_subbb",
-      "pages": []
-    },
-    {
-      "root": "pages_subbbb88",
-      "pages": []
+      "pages": [
+        {
+          "path": "index/index",
+          "style": {
+            "disableScroll": true,
+            "enablePullDownRefresh": false
+          }
+        }
+      ]
     }
   ],
   "globalStyle": {

@@ -3,7 +3,6 @@ import { spawn } from 'child_process'
 import { defineConfig } from 'vite'
 import uni from '@dcloudio/vite-plugin-uni'
 import AutoImport from 'unplugin-auto-import/vite'
-// import autoPagesJson from './js_sdk/a-hua-auto-pages-json'
 import { UnifiedViteWeappTailwindcssPlugin as uvwt } from 'weapp-tailwindcss/vite'
 import { codeInspectorPlugin } from 'code-inspector-plugin'
 
@@ -47,9 +46,9 @@ const resolve = p => {
 
 export default defineConfig({
   plugins: [
-    createAutoRunPlugin('图片重命名', '/js_sdk/set.images.prefix.js', ['/static']),
-    createAutoRunPlugin('Pages自动更新', '/js_sdk/set.pages.json.js', {
-      subPackages: ['pages_sub', 'pages_subb', 'pages_subbb', 'pages_subbbb88']
+    createAutoRunPlugin('图片重命名', './js_sdk/set.images.prefix.js', ['./static']),
+    createAutoRunPlugin('Pages自动更新', './js_sdk/set.pages.json.js', {
+      subPackages: ['pages_sub']
     }),
     codeInspectorPlugin({
       bundler: 'vite',

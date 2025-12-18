@@ -6,8 +6,9 @@ const chokidar = require('chokidar')
 const chalk = require('chalk')
 const ora = require('ora')
 
-const pagesDir = path.resolve(__dirname, 'pages')
-const pagesJsonPath = path.resolve(__dirname, 'pages.json')
+const projectRoot = path.resolve(__dirname, '..')
+const pagesDir = path.resolve(projectRoot, 'pages')
+const pagesJsonPath = path.resolve(projectRoot, 'pages.json')
 
 let optsArg = process.argv.find(a => typeof a === 'string' && a.startsWith('--options='))
 let options = {}
@@ -33,7 +34,7 @@ function scanPages(dir) {
     if (file.isDirectory()) {
       pages = pages.concat(scanPages(fullPath))
     } else if (file.isFile() && file.name.endsWith('.vue')) {
-      const relPath = path.relative(__dirname, fullPath)
+      const relPath = path.relative(projectRoot, fullPath)
       const pagePath = relPath.replace(/\\/g, '/').replace(/\.vue$/, '')
       pages.push(pagePath)
     }
@@ -42,7 +43,7 @@ function scanPages(dir) {
 }
 
 function scanSubPackage(root, baseRoot = root) {
-  const dir = path.resolve(__dirname, root)
+  const dir = path.resolve(projectRoot, root)
   if (!fs.existsSync(dir)) return []
   let pages = []
   const files = fs.readdirSync(dir, { withFileTypes: true })
@@ -51,7 +52,7 @@ function scanSubPackage(root, baseRoot = root) {
     if (file.isDirectory()) {
       pages = pages.concat(scanSubPackage(path.join(root, file.name), baseRoot))
     } else if (file.isFile() && file.name.endsWith('.vue')) {
-      const rel = path.relative(path.resolve(__dirname, baseRoot), full)
+      const rel = path.relative(path.resolve(projectRoot, baseRoot), full)
       const page = rel.replace(/\\/g, '/').replace(/\.vue$/, '')
       pages.push(page)
     }
@@ -167,7 +168,7 @@ function startWatcher() {
   console.log(chalk.blue.bold('  📂 正在监听 pages 与分包目录自动更新 pages.json...'))
   console.log()
   for (const root of subPackages) {
-    const dir = path.resolve(__dirname, root)
+    const dir = path.resolve(projectRoot, root)
     if (!fs.existsSync(dir)) {
       const idxDir = path.join(dir, 'index')
       fs.mkdirSync(idxDir, { recursive: true })
@@ -182,7 +183,7 @@ function startWatcher() {
     }
   }
   updatePagesJson()
-  const watchDirs = [pagesDir, ...subPackages.map(r => path.resolve(__dirname, r))]
+  const watchDirs = [pagesDir, ...subPackages.map(r => path.resolve(projectRoot, r))]
   const watcher = chokidar.watch(
     watchDirs.map(d => path.join(d, '**/*.vue')),
     {
