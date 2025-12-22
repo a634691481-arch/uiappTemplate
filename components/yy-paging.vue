@@ -28,11 +28,12 @@
     loading-full-fixed
     show-refresher-update-time
     efresher-angle-enable-change-continued
-    auto-show-system-loading
     auto-show-back-to-top
     :safe-area-inset-bottom="false"
     :use-safe-area-placeholder="false"
   >
+    <!-- auto-show-system-loading -->
+    <!--  -->
     <!-- auto-show-system-loading-->
     <!-- loading-full-fixed -->
     <!-- show-refresher-update-time-->
@@ -80,7 +81,7 @@
     </template>
     <template #refresherF2>
       <view class="p-3">
-        <view class="flex justify-center items-center p-1 text-white bg-gray-800 rounded-md">
+        <view class="flex items-center justify-center p-1 text-white bg-gray-800 rounded-md">
           松手可以进入二楼哦 (*╹▽╹*)
         </view>
       </view>
