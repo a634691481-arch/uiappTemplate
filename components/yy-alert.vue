@@ -1,18 +1,22 @@
 <template>
-  <view class="size-full bg-black/60 flex fixed inset-0 justify-center items-center" v-if="options.show">
+  <view class="size-full bg-black/60 fixed inset-0 flex items-center justify-center" v-if="options.show">
     <transition name="alert-scale" appear>
       <view class="w-[80%] bg-white rounded-[1rem]" v-if="options.show">
-        <view class="flex flex-col gap-4 justify-center items-center p-4 py-5">
+        <view class="flex flex-col items-center justify-center gap-4 p-4 py-5">
           <view class="text-[1rem] text-[#161A24] font-medium" v-if="options.title">{{ options.title }}</view>
           <view class="text-[.875rem] text-[#5C6068] text-center px-8">{{ options.describe }}</view>
         </view>
-        <view class="grid grid-cols-2 border-t-[.0625rem]">
-          <view class="flex col-span-1 justify-center items-center border-r-[.0625rem] py-3" @click="close">
+        <view class="grid border-t-[.0625rem]" :class="[options.cancel ? 'grid-cols-2' : 'grid-cols-1']">
+          <view
+            class="flex col-span-1 justify-center items-center border-r-[.0625rem] py-3"
+            @click="close"
+            v-if="options.cancel"
+          >
             <text :style="{ color: options.cancelColor }" class="text-[1rem] text-[#161A24]">
               {{ options.cancel }}
             </text>
           </view>
-          <view class="flex col-span-1 justify-center items-center py-3" @click="confirm">
+          <view class="flex items-center justify-center col-span-1 py-3" @click="confirm" v-if="options.confirm">
             <text :style="{ color: options.confirmColor }" class="font-medium text-[1rem] text-[#161A24]">
               {{ options.confirm }}
             </text>
@@ -32,8 +36,8 @@
     show: false,
     title: '温馨提示',
     describe: '确定要执行此操作吗？',
-    cancel: '取消',
-    confirm: '确定',
+    // cancel: '取消',
+    // confirm: '确定',
     cancelColor: '#5C6068',
     confirmColor: '#FF3A56',
     eventType: 'confirm'
