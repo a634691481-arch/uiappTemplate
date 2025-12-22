@@ -14,6 +14,8 @@
           :title="state.title"
           :border-bottom="false"
           title-color="#fff"
+          isBack
+          backIconColor="#fff"
         >
         </u-navbar>
       </template>
@@ -23,11 +25,15 @@
       <template #loadingMoreNoMore>
         <yy-nomore></yy-nomore>
       </template>
+      <template #bottom>
+        <view class="h-11"></view>
+      </template>
       <view class="flex flex-col px-3"> </view>
     </yy-paging>
     <!--  -->
     <!--  -->
     <!--  -->
+    <yy-tabbar></yy-tabbar>
   </view>
 </template>
 
@@ -48,11 +54,12 @@
     console.log('🚀 ~ :55 ~ options:', options)
   })
 
-  function scroll(e) {
+  // 滚动事件
+  const scroll = e => {
     state.value.isScroll = e.detail.scrollTop > 0
   }
-
-  function queryList(page, limit) {
+  // 列表查询
+  const queryList = (page, limit) => {
     console.log('🚀 ~ :58 ~ queryList ~ page, limit:', page, limit)
     setTimeout(() => {
       paging.value?.complete([1])

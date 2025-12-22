@@ -14,6 +14,7 @@
           :title="state.title"
           :border-bottom="false"
           title-color="#fff"
+          isBack
           backIconColor="#fff"
         >
         </u-navbar>
@@ -25,27 +26,14 @@
         <yy-nomore></yy-nomore>
       </template>
       <template #bottom>
-        <yy-tabbar></yy-tabbar>
+        <view class="h-11"></view>
       </template>
-      <view class="flex flex-col p-3">
-        <!-- 按钮 -->
-        <view class="px-6 mt-6 w-full">
-          <view
-            class="active:opacity-90 flex justify-center items-center py-3 w-full rounded-full transition-all"
-            style="
-              background: linear-gradient(135deg, #18c9d9 0%, #0eb0c0 100%);
-              box-shadow: 0 8px 16px -4px rgba(24, 201, 217, 0.4);
-            "
-            @click="openWeapp"
-          >
-            <u-icon name="miniprogram-fill" color="#fff" size="36"></u-icon>
-            <text class="ml-2 text-lg font-bold text-white">跳转到微信小程序</text>
-            <u-icon name="arrow-right" color="#fff" size="24" class="ml-1 opacity-80"></u-icon>
-          </view>
-          <view class="mt-3 text-xs text-center text-gray-400"> 点击上方按钮唤起小程序 </view>
-        </view>
-      </view>
+      <view class="flex flex-col px-3"> </view>
     </yy-paging>
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    <yy-tabbar></yy-tabbar>
   </view>
 </template>
 
@@ -64,23 +52,18 @@
   // 页面生命周期（Uni-App）
   onLoad(options => {
     console.log('🚀 ~ :55 ~ options:', options)
-    // openWeapp()
   })
 
-  function scroll(e) {
+  // 滚动事件
+  const scroll = e => {
     state.value.isScroll = e.detail.scrollTop > 0
   }
-
-  function queryList(page, limit) {
+  // 列表查询
+  const queryList = (page, limit) => {
     console.log('🚀 ~ :58 ~ queryList ~ page, limit:', page, limit)
     setTimeout(() => {
       paging.value?.complete([1])
     }, 1000)
-  }
-
-  function openWeapp() {
-    const scheme = 'weixin://dl/business/?appid=wx02245e9a1237f40c&path=pages/home/index'
-    window.location.href = scheme
   }
 </script>
 
