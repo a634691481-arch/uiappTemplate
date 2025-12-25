@@ -10,6 +10,7 @@
     @onRefresh="onRefresh"
     @scrolltolower="scrolltolower"
     @scrollIntoViewById="scrollIntoViewById"
+    :pagingClass="pagingClass"
     :useVirtualList="useVirtualList"
     :useInnerList="useInnerList"
     :cellKeyName="cellKeyName"
@@ -101,6 +102,11 @@
   const emits = defineEmits(['onRefresh', 'query', 'update:modelValue', 'scrolltolower'])
 
   const props = defineProps({
+    //paging-class
+    pagingClass: {
+      type: String,
+      default: ''
+    },
     // 是否关闭首次自动下拉刷新，默认 false（即默认开启）
     showRefresherWhenReload: {
       type: Boolean,
