@@ -51,16 +51,19 @@
 
   // 页面生命周期（Uni-App）
   onLoad(options => {
-    console.log('🚀 ~ :55 ~ options:', options)
+    console.log('🚀 ~ :53 ~ options:', options)
   })
 
   // 滚动事件
   const scroll = e => {
+    console.log('🚀 ~ :58 ~ scroll ~ e:', e)
     state.value.isScroll = e.detail.scrollTop > 0
   }
   // 列表查询
   const queryList = (page, limit) => {
-    console.log('🚀 ~ :58 ~ queryList ~ page, limit:', page, limit)
+    console.log('🚀 ~ :63 ~ queryList ~ page:', page)
+    console.log('🚀 ~ :63 ~ queryList ~ limit:', limit)
+
     setTimeout(() => {
       paging.value?.complete([1])
     }, 1000)
