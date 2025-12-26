@@ -16,8 +16,7 @@
           title-color="#fff"
           isBack
           backIconColor="#fff"
-        >
-        </u-navbar>
+        ></u-navbar>
       </template>
       <template #empty>
         <yy-empty></yy-empty>
@@ -28,7 +27,7 @@
       <template #bottom>
         <view class="h-11"></view>
       </template>
-      <view class="flex flex-col px-3"> </view>
+      <view class="flex flex-col px-3"></view>
     </yy-paging>
     <!--  -->
     <!--  -->
@@ -51,19 +50,16 @@
 
   // 页面生命周期（Uni-App）
   onLoad(options => {
-    console.log('🚀 ~ :53 ~ options:', options)
+    console.log('🚀 ~ :55 ~ options:', options)
   })
 
   // 滚动事件
   const scroll = e => {
-    console.log('🚀 ~ :58 ~ scroll ~ e:', e)
     state.value.isScroll = e.detail.scrollTop > 0
   }
   // 列表查询
   const queryList = (page, limit) => {
-    console.log('🚀 ~ :63 ~ queryList ~ page:', page)
-    console.log('🚀 ~ :63 ~ queryList ~ limit:', limit)
-
+    console.log('🚀 ~ :58 ~ queryList ~ page, limit:', page, limit)
     setTimeout(() => {
       paging.value?.complete([1])
     }, 1000)
