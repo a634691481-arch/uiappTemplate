@@ -16,8 +16,7 @@
           title-color="#fff"
           isBack
           backIconColor="#fff"
-        >
-        </u-navbar>
+        ></u-navbar>
       </template>
       <template #empty>
         <yy-empty></yy-empty>
@@ -28,7 +27,7 @@
       <template #bottom>
         <view class="h-11"></view>
       </template>
-      <view class="flex flex-col px-3"> </view>
+      <view class="flex flex-col px-3"></view>
     </yy-paging>
     <!--  -->
     <!--  -->
@@ -44,6 +43,8 @@
     dataList: [],
     title: '首页'
   })
+  // vk.setStorageSync('uni_id_token', res.data.token)
+  // vk.setStorageSync('uni_id_token_expired', Date.now() + 365 * 24 * 60 * 60 * 1000) // 过期时间设置为一年后
 
   // 组件引用
   const paging = ref()

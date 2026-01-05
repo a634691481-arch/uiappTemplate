@@ -28,8 +28,6 @@
 </template>
 
 <script setup>
-  // <tasi-alert ref="alert" @alertConfirm="handleAlertConfirm"></tasi-alert>
-
   const emit = defineEmits(['alertConfirm'])
 
   const options = reactive({

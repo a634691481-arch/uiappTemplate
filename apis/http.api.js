@@ -1,7 +1,6 @@
 let http = uni.$u
 
-// const BASE_URL = 'https://testdiaodianv2.tikevideos.shop'
-const BASE_URL = 'https://www.diaodiandaren.com'
+const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const install = e => {
   http.http.setConfig({

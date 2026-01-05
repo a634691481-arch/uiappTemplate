@@ -1,7 +1,7 @@
 <template>
   <view>
-    <view class="flex flex-col justify-center items-center" @click="reloadClick">
-      <view class="w-[30vw]">
+    <view class="flex flex-col items-center justify-center" @click="reloadClick">
+      <view class="w-[30vw]" :style="{ 'margin-top': margin }">
         <u-image mode="widthFix" :src="url"></u-image>
       </view>
       <text class="mt-3 text-xs text-gray-500">{{ text }}</text>
@@ -19,6 +19,10 @@
     text: {
       type: String,
       default: '暂无数据~'
+    },
+    margin: {
+      type: String,
+      default: '5vh'
     }
   })
 

@@ -1,15 +1,17 @@
 <template>
-	<view class="u-upload" v-if="!disabled">
+	<view class="u-upload !grid-cols-3 w-full !grid *:col-span-1 *:aspect-square" v-if="!disabled">
 		<view
 			v-if="showUploadList"
-			class="u-list-item u-preview-wrap"
+			class="u-list-item u-preview-wrap "
 			v-for="(item, index) in lists"
 			:key="index"
-			:style="{
+			
+		>
+		<!-- 
+		:style="{
 				width: $u.addUnit(width),
 				height: $u.addUnit(height)
-			}"
-		>
+			}" -->
 			<view
 				v-if="deletable"
 				class="u-delete-icon"
@@ -629,8 +631,8 @@ export default {
 }
 
 .u-list-item {
-	width: 200rpx;
-	height: 200rpx;
+	//width: 200rpx;
+	//height: 200rpx;
 	overflow: hidden;
 	margin: 10rpx;
 	background: rgb(244, 245, 246);
