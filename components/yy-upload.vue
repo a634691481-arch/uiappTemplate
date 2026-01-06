@@ -76,26 +76,6 @@
 
   // 内部维护的文件列表，用于展示
   const fileList = ref([])
-  // const imagesList = ref([])
-
-  // 初始化文件列表
-  // watch(
-  //   () => props.modelValue,
-  //   val => {
-  //     if (!val) {
-  //       fileList.value = []
-  //       return
-  //     }
-  //     const list = Array.isArray(val) ? val : val.split(',').filter(Boolean)
-  //     fileList.value = list.map(item => {
-  //       if (typeof item === 'string') {
-  //         return { url: item }
-  //       }
-  //       return item
-  //     })
-  //   },
-  //   { immediate: true }
-  // )
 
   // 上传成功
   const onSuccess = (data, index, lists, name) => {
@@ -132,6 +112,15 @@
     }
     emit('change', urls)
   }
+  const clear = () => {
+    fileList.value = []
+    updateModelValue()
+  }
+
+  // 暴露方法给父组件
+  defineExpose({
+    clear
+  })
 </script>
 
 <script>
