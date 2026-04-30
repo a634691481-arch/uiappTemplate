@@ -4,7 +4,7 @@
       <view class="p-3 pb-0 bg-white">
         <u-search v-model="state.keyword" placeholder="搜索定制" :show-action="false" @search="onSearch"></u-search>
       </view>
-      <u-tabs :list="state.tabList" :is-scroll="false" :current="state.currentTab" @change="onTabChange"></u-tabs>
+      <u-tabs :list="state.tabList" :is-scroll="true" :current="state.currentTab" @change="onTabChange"></u-tabs>
     </template>
     <view class="flex flex-col gap-3 p-3">
       <view
