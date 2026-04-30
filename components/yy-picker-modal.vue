@@ -40,7 +40,7 @@
     title: { type: String, default: '请选择' },
     list: { type: Array, default: () => [] },
     value: { type: [String, Number], default: '' },
-    activeColor: { type: String, default: '' },
+    activeColor: { type: String, default: uni.$u.color.primary },
   })
 
   const emit = defineEmits(['update:modelValue', 'change'])
