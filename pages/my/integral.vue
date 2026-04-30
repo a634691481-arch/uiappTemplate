@@ -36,19 +36,7 @@
       </view>
     </view>
 
-    <!-- 规则说明弹窗 -->
-    <u-popup v-model="state.showRules" mode="center" border-radius="16" width="80%">
-      <view class="p-3">
-        <view class="text-base font-medium text-center text-gray-900">积分规则</view>
-        <view class="mt-3 text-sm leading-relaxed text-gray-600">
-          <view>1. 每日签到可获得积分奖励</view>
-          <view>2. 积分可用于抵扣订单金额</view>
-          <view>3. 积分有效期为一年，过期自动失效</view>
-          <view>4. 如有疑问请联系客服</view>
-        </view>
-        <u-button type="primary" class="mt-4" @click="state.showRules = false">我知道了</u-button>
-      </view>
-    </u-popup>
+    <yy-tip-modal v-model="state.showRules" title="积分规则" :list="rulesList" :active-color="pagingConfig.color" />
   </yy-paging>
 </template>
 
@@ -72,6 +60,13 @@
     showRules: false,
     tabList: [{ name: '全部' }, { name: '收入' }, { name: '支出' }, { name: '失效' }, { name: '使用' }],
   })
+
+  const rulesList = [
+    '每日签到可获得积分奖励',
+    '积分可用于抵扣订单金额',
+    '积分有效期为一年，过期自动失效',
+    '如有疑问请联系客服',
+  ]
 
   const paging = ref()
 
