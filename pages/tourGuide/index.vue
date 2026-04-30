@@ -38,7 +38,6 @@
           :class="current === index ? 'bg-white text-gray-900 font-medium' : 'text-gray-500'"
           v-for="(item, index) in state.cityList"
           :key="item"
-          @tap.stop="switchMenu(index)"
         >
           <view
             v-if="current === index"
@@ -72,6 +71,7 @@
                 :style="isMatch(item) ? { borderColor: uni.$u.color.primary } : {}"
                 v-for="(item, index) in group.list"
                 :key="index"
+                @click.stop="goToDetails(item)"
               >
                 <view class="w-28 h-28 bg-slate-200 relative flex-shrink-0 overflow-hidden rounded-lg">
                   <u-image :src="item.image" class="!size-28" mode="aspectFill" width="100%" height="100%"></u-image>
@@ -109,7 +109,6 @@
       title="选择景区等级"
       :list="state.levelList"
       :value="state.currentLevel"
-      :active-color="pagingConfig.color"
       @change="selectLevel"
     />
   </yy-paging>
@@ -206,6 +205,11 @@
       containerHeight.value =
         windowHeight - (topHeight + statusBarHeight + navHeight + tabbarHeight + safeAreaBottom + faultTolerantPx) + 'px'
     })
+  }
+
+  function goToDetails(city) {
+    console.log('🚀 goToDetails:', city)
+    vk.toast('功能开发中', 'none')
   }
 
   function scroll(e) {
