@@ -30,7 +30,7 @@
     title: { type: String, default: '提示' },
     list: { type: Array, default: () => [] },
     confirmText: { type: String, default: '我知道了' },
-    activeColor: { type: String, default: '' },
+    activeColor: { type: String, default: uni.$u.color.primary },
   })
 
   const emit = defineEmits(['update:modelValue', 'confirm'])
