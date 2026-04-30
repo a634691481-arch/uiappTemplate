@@ -29,10 +29,10 @@
     </yy-paging>
 
     <!-- 主题选择弹窗 -->
-    <yy-theme-picker v-model="showThemePicker" :active-color="pagingConfig.color" @change="onThemeChange" />
+    <yy-theme-picker v-model="showThemePicker" @change="onThemeChange" />
 
     <!-- 深色模式选择弹窗 -->
-    <yy-dark-mode-picker v-model="showDarkModePicker" :active-color="pagingConfig.color" @change="onDarkModeChange" />
+    <yy-dark-mode-picker v-model="showDarkModePicker" @change="onDarkModeChange" />
 
     <view
       class="dark:bg-gray-900 dark:border-gray-800 fixed bottom-0 left-0 right-0 grid grid-cols-2 gap-2 p-3 bg-white border-t"
@@ -63,8 +63,8 @@
 
   const pagingConfig = ref({
     auto: false,
-    refresherEnabled: true,
-    showRefresherWhenReload: true,
+    refresherEnabled: false,
+    showRefresherWhenReload: false,
     showTabbar: false,
     hideNav: false,
     showNavBack: true,
