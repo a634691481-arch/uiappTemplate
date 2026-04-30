@@ -90,11 +90,10 @@
       title="选择行业"
       :list="state.industryList"
       :value="state.form.industry"
-      :active-color="pagingConfig.color"
       @change="selectIndustry"
     />
 
-    <yy-tip-modal v-model="showPolicy" title="分销开通政策" :list="policyList" :active-color="pagingConfig.color" />
+    <yy-tip-modal v-model="showPolicy" title="分销开通政策" :list="policyList" />
   </yy-paging>
 </template>
 
