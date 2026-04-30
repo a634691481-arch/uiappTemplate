@@ -194,35 +194,35 @@
 
   function submit() {
     if (!form.value.region) {
-      uni.showToast({ title: '请选择所在地区', icon: 'none' })
+      vk.toast('请选择所在地区')
       return
     }
     if (!form.value.target.trim()) {
-      uni.showToast({ title: '请输入投诉对象', icon: 'none' })
+      vk.toast('请输入投诉对象')
       return
     }
     if (!form.value.category) {
-      uni.showToast({ title: '请选择投诉分类', icon: 'none' })
+      vk.toast('请选择投诉分类')
       return
     }
     if (!form.value.subCategory) {
-      uni.showToast({ title: '请选择投诉类别', icon: 'none' })
+      vk.toast('请选择投诉类别')
       return
     }
     if (!form.value.description.trim()) {
-      uni.showToast({ title: '请输入投诉描述', icon: 'none' })
+      vk.toast('请输入投诉描述')
       return
     }
     if (!form.value.name.trim()) {
-      uni.showToast({ title: '请输入您的姓名', icon: 'none' })
+      vk.toast('请输入您的姓名')
       return
     }
     if (!/^1\d{10}$/.test(form.value.phone)) {
-      uni.showToast({ title: '请输入正确的手机号', icon: 'none' })
+      vk.toast('请输入正确的手机号')
       return
     }
 
-    uni.showToast({ title: '提交成功', icon: 'success' })
+    vk.toast('提交成功', 'success')
     // TODO: 调用接口提交表单
   }
 
