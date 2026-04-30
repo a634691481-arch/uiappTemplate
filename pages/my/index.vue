@@ -3,26 +3,23 @@
     <view class="flex flex-col gap-3 p-3">
       <!-- 用户信息 -->
       <view class="flex items-center justify-between gap-3 p-3 rounded-lg">
-        <view class="flex items-center gap-2">
-          <view class="size-14 ring-2 ring-gray-300 overflow-hidden bg-gray-100 rounded-full">
-            <u-image
-              src="https://picsum.photos/200/300"
-              width="100%"
-              height="100%"
-              class="!size-full"
-              mode="aspectFill"
-            ></u-image>
+        <view class="flex items-center gap-2" @click="openEdit">
+          <view
+            class="size-14 bg-gray-50 flex items-center justify-center overflow-hidden border-2 rounded-full"
+            :style="{ borderColor: `${uni.$u.color.primary}30` }"
+          >
+            <u-image :src="userInfo.avatar" width="100%" height="100%" class="!size-full" mode="aspectFill"></u-image>
           </view>
 
           <view class="flex flex-col">
-            <view class="text-base font-medium text-gray-900">昵称</view>
+            <view class="text-base font-medium text-gray-900">{{ userInfo.nickname }}</view>
             <view class="text-xs text-gray-400 mt-0.5">账号: 18599996666</view>
           </view>
         </view>
         <view
           class="size-8 flex items-center justify-center rounded-lg"
           style="background-color: rgba(var(--u-type-primary-rgb), 0.05)"
-          @click="navigateTo('/pages/my/profile')"
+          @click.stop="navigateTo('/pages/my/profile')"
         >
           <zero-icon name="ri:arrow-right-s-line" size="20" :color="uni.$u.color.primary"></zero-icon>
         </view>
@@ -119,6 +116,7 @@
       <!--  -->
     </view>
   </yy-paging>
+  <yy-edit-information v-model="showEdit" :user-info="userInfo" @success="onEditSuccess" />
 </template>
 
 <script setup>
@@ -134,6 +132,13 @@
     navTitle: '我的',
     color: uni.$u.color.primary,
     loadingMoreNoMoreText: '',
+  })
+
+  const showEdit = ref(false)
+  const userInfo = ref({
+    nickname: '昵称',
+    avatar: 'https://picsum.photos/200/300',
+    gender: '男',
   })
 
   const state = ref({
@@ -192,6 +197,16 @@
   async function queryList(page, limit) {
     await new Promise(resolve => setTimeout(resolve, 100))
     paging.value?.complete([1])
+  }
+
+  function openEdit() {
+    showEdit.value = true
+  }
+
+  function onEditSuccess(data) {
+    if (data?.nickname) userInfo.value.nickname = data.nickname
+    if (data?.avatar) userInfo.value.avatar = data.avatar
+    if (data?.gender !== undefined) userInfo.value.gender = data.gender === 1 ? '男' : '女'
   }
 </script>
 
