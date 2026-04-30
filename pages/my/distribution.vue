@@ -85,42 +85,16 @@
       <u-button type="primary" @click="submit">确定提交</u-button>
     </view>
 
-    <!-- 行业选择弹窗 -->
-    <u-popup v-model="showIndustryPicker" mode="bottom" border-radius="16" height="50%">
-      <view class="flex flex-col h-full">
-        <view class="sticky top-0 z-10 flex items-center justify-between p-3 bg-white">
-          <view class="text-base font-medium text-gray-900">选择行业</view>
-          <u-icon name="close" size="24" color="#999" @click="showIndustryPicker = false"></u-icon>
-        </view>
-        <scroll-view scroll-y class="flex flex-col gap-1 p-3">
-          <view
-            class="active:bg-gray-50 flex items-center justify-between p-3 rounded-md"
-            v-for="item in state.industryList"
-            :key="item"
-            @click="selectIndustry(item)"
-          >
-            <view class="text-sm text-gray-700">{{ item }}</view>
-            <zero-icon name="ri:check-line" size="20" :color="uni.$u.color.primary" v-if="state.form.industry === item" />
-          </view>
-        </scroll-view>
-      </view>
-    </u-popup>
+    <yy-picker-modal
+      v-model="showIndustryPicker"
+      title="选择行业"
+      :list="state.industryList"
+      :value="state.form.industry"
+      :active-color="pagingConfig.color"
+      @change="selectIndustry"
+    />
 
-    <!-- 分销政策弹窗 -->
-    <u-popup v-model="showPolicy" mode="center" border-radius="16" width="80%">
-      <view class="p-4">
-        <view class="text-base font-medium text-center text-gray-900">分销开通政策</view>
-        <view class="flex flex-col gap-1 mt-3 text-sm leading-relaxed text-gray-600">
-          <view>1. 申请人须年满 18 周岁，具备完全民事行为能力。</view>
-          <view>2. 提交真实有效的个人信息，虚假信息将导致申请被拒绝。</view>
-          <view>3. 分销佣金比例为订单金额的 5%-15%，根据业绩阶梯调整。</view>
-          <view>4. 佣金将在订单完成后 7 个工作日内结算至绑定账户。</view>
-          <view>5. 严禁恶意刷单、虚假宣传等违规行为，违者将取消分销资格。</view>
-          <view>6. 平台保留随时调整分销政策的权利，调整将提前通知。</view>
-        </view>
-        <u-button type="primary" class="mt-4" @click="showPolicy = false">我知道了</u-button>
-      </view>
-    </u-popup>
+    <yy-tip-modal v-model="showPolicy" title="分销开通政策" :list="policyList" :active-color="pagingConfig.color" />
   </yy-paging>
 </template>
 
@@ -156,6 +130,15 @@
   const codeText = ref('获取验证码')
   const showIndustryPicker = ref(false)
   const showPolicy = ref(false)
+
+  const policyList = [
+    '申请人须年满 18 周岁，具备完全民事行为能力',
+    '提交真实有效的个人信息，虚假信息将导致申请被拒绝',
+    '分销佣金比例为订单金额的 5%-15%，根据业绩阶梯调整',
+    '佣金将在订单完成后 7 个工作日内结算至绑定账户',
+    '严禁恶意刷单、虚假宣传等违规行为，违者将取消分销资格',
+    '平台保留随时调整分销政策的权利，调整将提前通知',
+  ]
 
   onLoad(options => {
     console.log('🚀 页面加载:', options)
