@@ -1,6 +1,8 @@
 <template>
   <yy-paging v-model="state.dataList" @query="queryList" ref="paging" @scroll="scroll" v-bind="pagingConfig">
-    <view class="flex-col gap-3 p-3"></view>
+    <view class="flex-col gap-3 p-3">
+      <view class="p-3 bg-white rounded-lg"></view>
+    </view>
   </yy-paging>
 </template>
 
