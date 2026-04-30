@@ -81,7 +81,6 @@
 - 卡片头部统一使用：`flex items-center justify-between p-3 border-b border-gray-100`
 - 卡片标题统一使用：`text-sm font-medium text-gray-900`
 - 卡片右侧操作区统一使用：`flex items-center text-xs text-gray-400`
-  - 操作文字后直接紧跟 `u-icon`，如：`全部 <u-icon name="arrow-right" size="22" class="ml-0.5 align-middle"></u-icon>`
 
 ## 文字颜色层级
 
