@@ -1,7 +1,7 @@
 <template>
   <yy-paging v-model="state.dataList" @query="queryList" ref="paging" @scroll="scroll" v-bind="pagingConfig">
     <template #top>
-      <view class="rounded-xl flex items-center justify-between p-3 mx-3 mt-3 bg-white shadow-sm">
+      <view class="flex items-center justify-between p-3 mx-3 mt-3 bg-white rounded-lg shadow-sm">
         <view class="flex items-center gap-2">
           <zero-icon name="ri:information-line" size="20" color="#9ca3af" />
           <text class="text-xs text-gray-400">订单服务由本平台提供</text>
@@ -13,7 +13,7 @@
     </template>
     <view class="flex flex-col gap-3 p-3">
       <!-- 功能列表 -->
-      <view class="flex flex-col overflow-hidden bg-white shadow-sm rounded-2xl">
+      <view class="flex flex-col overflow-hidden bg-white rounded-lg shadow-sm">
         <view
           class="last:border-b-0 active:bg-gray-50 flex items-center justify-between px-3 py-3 transition-all border-b border-gray-100"
           v-for="(item, index) in state.menuList"
@@ -22,7 +22,7 @@
         >
           <view class="flex items-center gap-3">
             <view
-              class="rounded-xl flex items-center justify-center"
+              class="flex items-center justify-center rounded-lg"
               style="width: 40px; height: 40px; background-color: rgba(var(--u-type-primary-rgb), 0.1)"
             >
               <zero-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
