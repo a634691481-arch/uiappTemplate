@@ -34,7 +34,7 @@
       </view>
     </view>
 
-    <yy-tip-modal v-model="showExplain" title="咨询服务说明" :list="explainList" :active-color="pagingConfig.color" />
+    <yy-tip-modal v-model="showExplain" title="咨询服务说明" :list="explainList" />
   </yy-paging>
 </template>
 
