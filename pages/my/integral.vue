@@ -36,7 +36,7 @@
       </view>
     </view>
 
-    <yy-tip-modal v-model="state.showRules" title="积分规则" :list="rulesList" :active-color="pagingConfig.color" />
+    <yy-tip-modal v-model="state.showRules" title="积分规则" :list="rulesList" />
   </yy-paging>
 </template>
 
