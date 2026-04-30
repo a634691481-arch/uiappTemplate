@@ -90,7 +90,6 @@
     title="选择所在地区"
     :list="regionList"
     :value="form.region"
-    :active-color="pagingConfig.color"
     @change="val => (form.region = val)"
   />
 
@@ -99,7 +98,6 @@
     title="选择投诉分类"
     :list="categoryList"
     :value="form.category"
-    :active-color="pagingConfig.color"
     @change="val => (form.category = val)"
   />
 
@@ -108,7 +106,6 @@
     title="选择投诉类别"
     :list="subCategoryList"
     :value="form.subCategory"
-    :active-color="pagingConfig.color"
     @change="val => (form.subCategory = val)"
   />
 </template>
