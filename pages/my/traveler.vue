@@ -13,13 +13,8 @@
             <u-tag :text="item.type" type="info" size="mini"></u-tag>
           </view>
           <view class="flex items-center gap-3">
-            <zero-icon
-              name="ri:edit-line"
-              size="20"
-              :color="uni.$u.color.primary"
-              @click="editTraveler(item)"
-            ></zero-icon>
-            <zero-icon name="ri:delete-bin-line" size="20" color="#ef4444" @click="deleteTraveler(item)"></zero-icon>
+            <yy-icon name="ri:edit-line" size="20" :color="uni.$u.color.primary" @click="editTraveler(item)"></yy-icon>
+            <yy-icon name="ri:delete-bin-line" size="20" color="#ef4444" @click="deleteTraveler(item)"></yy-icon>
           </view>
         </view>
         <view class="flex flex-col gap-1 p-3">

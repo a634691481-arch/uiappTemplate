@@ -3,7 +3,7 @@
     <view class="flex flex-col gap-3 p-3">
       <!-- 顶部提示 -->
       <view class="flex items-center gap-2 p-3 bg-white rounded-lg shadow-sm">
-        <zero-icon name="ri:information-line" size="20" color="#9ca3af" />
+        <yy-icon name="ri:information-line" size="20" color="#9ca3af" />
         <text class="text-xs text-gray-400">请如实填写投诉信息，我们会尽快为您处理</text>
       </view>
 

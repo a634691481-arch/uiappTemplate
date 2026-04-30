@@ -45,12 +45,12 @@
                             :color="elColor(index)"
                             :custom-prefix="getCustomPrefix(index)"
                         ></u-icon> -->
-                          <zero-icon
+                          <yy-icon
                             size="20"
                             :name="elIconPath(index)" 
                             :color="elColor(index)"
                             img-mode="scaleToFill"
-                          </zero-icon>
+                          </yy-icon>
                           
 
 

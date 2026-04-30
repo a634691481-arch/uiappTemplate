@@ -21,7 +21,7 @@
           style="background-color: rgba(var(--u-type-primary-rgb), 0.05)"
           @click.stop="navigateTo('/pages/my/profile')"
         >
-          <zero-icon name="ri:arrow-right-s-line" size="20" :color="uni.$u.color.primary"></zero-icon>
+          <yy-icon name="ri:arrow-right-s-line" size="20" :color="uni.$u.color.primary"></yy-icon>
         </view>
       </view>
 
@@ -55,7 +55,7 @@
               class="flex items-center justify-center rounded-lg"
               style="width: 36px; height: 36px; background-color: rgba(var(--u-type-primary-rgb), 0.1)"
             >
-              <zero-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
+              <yy-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
             </view>
             <view class="text-xs text-gray-600">{{ item.name }}</view>
           </view>
@@ -82,7 +82,7 @@
               class="flex items-center justify-center rounded-lg"
               style="width: 36px; height: 36px; background-color: rgba(var(--u-type-primary-rgb), 0.1)"
             >
-              <zero-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
+              <yy-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
             </view>
             <view class="text-xs text-gray-600">{{ item.name }}</view>
           </view>
@@ -102,7 +102,7 @@
               class="flex items-center justify-center rounded-lg"
               style="width: 36px; height: 36px; background-color: rgba(var(--u-type-primary-rgb), 0.1)"
             >
-              <zero-icon :name="i.icon" size="20" :color="uni.$u.color.primary" />
+              <yy-icon :name="i.icon" size="20" :color="uni.$u.color.primary" />
             </view>
             <view class="text-sm text-gray-700">{{ i.name }}</view>
           </view>

@@ -6,7 +6,7 @@
         <view class="text-sm font-medium text-gray-900">年卡权益</view>
         <view class="flex flex-col gap-2">
           <view class="flex items-center gap-2" v-for="(item, index) in state.benefitList" :key="index">
-            <zero-icon name="ri:checkbox-circle-line" size="18" :color="uni.$u.color.primary"></zero-icon>
+            <yy-icon name="ri:checkbox-circle-line" size="18" :color="uni.$u.color.primary"></yy-icon>
             <view class="text-sm text-gray-700">{{ item }}</view>
           </view>
         </view>

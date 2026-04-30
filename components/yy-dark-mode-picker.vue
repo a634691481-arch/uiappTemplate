@@ -3,7 +3,7 @@
     <view class="flex flex-col h-full">
       <view class="sticky top-0 z-10 flex items-center justify-between p-3">
         <view class="text-base font-medium text-gray-900">{{ title }}</view>
-        <zero-icon name="ri:close-line" size="24" color="#999" @click="close" />
+        <yy-icon name="ri:close-line" size="24" color="#999" @click="close" />
       </view>
       <scroll-view scroll-y class="flex flex-col gap-2 p-3">
         <view
@@ -17,11 +17,11 @@
               class="flex items-center justify-center rounded-lg"
               style="width: 36px; height: 36px; background-color: rgba(var(--u-type-primary-rgb), 0.1)"
             >
-              <zero-icon :name="item.icon" size="20" :color="activeColor" />
+              <yy-icon :name="item.icon" size="20" :color="activeColor" />
             </view>
             <view class="text-sm text-gray-700">{{ item.label }}</view>
           </view>
-          <zero-icon name="ri:check-line" size="20" :color="activeColor" v-if="currentMode === item.value" />
+          <yy-icon name="ri:check-line" size="20" :color="activeColor" v-if="currentMode === item.value" />
         </view>
       </scroll-view>
     </view>

@@ -1,7 +1,11 @@
 <template>
   <yy-paging v-model="state.dataList" @query="queryList" ref="paging" @scroll="scroll" v-bind="pagingConfig">
     <view class="flex-col gap-3 p-3">
-      <view class="p-3 bg-white rounded-lg"></view>
+      <view class="flex items-center gap-2 p-3 bg-white rounded-lg">
+        <yy-icon name="ri:information-line" size="20" color="#9ca3af" />
+        <text class="text-xs text-gray-400">请如实填写投诉信息，我们会尽快为您处理</text>
+        <yy-icon name="ri:information-line" size="20" color="#9ca3af"></yy-icon>
+      </view>
     </view>
   </yy-paging>
 </template>

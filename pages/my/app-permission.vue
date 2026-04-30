@@ -17,7 +17,7 @@
               class="flex items-center justify-center flex-shrink-0 rounded-lg"
               style="width: 36px; height: 36px; background-color: rgba(var(--u-type-primary-rgb), 0.1)"
             >
-              <zero-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
+              <yy-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
             </view>
             <view class="flex flex-col gap-1">
               <view class="text-sm font-medium text-gray-800">{{ item.name }}</view>

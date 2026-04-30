@@ -12,7 +12,7 @@
       >
         <view class="text-base font-semibold text-gray-900">{{ title }}</view>
         <view class="active:bg-gray-100 flex items-center justify-center w-8 h-8 rounded-full" @click="close">
-          <zero-icon name="ri:close-line" size="20" color="#9ca3af" />
+          <yy-icon name="ri:close-line" size="20" color="#9ca3af" />
         </view>
       </view>
       <scroll-view scroll-y class="flex-1 w-full">
@@ -38,7 +38,7 @@
                 {{ item.label }}
               </view>
             </view>
-            <zero-icon name="ri:check-line" size="20" :color="activeColor" v-if="currentThemeName === item.name" />
+            <yy-icon name="ri:check-line" size="20" :color="activeColor" v-if="currentThemeName === item.name" />
           </view>
         </view>
       </scroll-view>

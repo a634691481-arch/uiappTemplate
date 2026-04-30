@@ -3,7 +3,7 @@
     <template #top>
       <view class="flex items-center justify-between p-3 mx-3 mt-3 bg-white rounded-lg shadow-sm">
         <view class="flex items-center gap-2">
-          <zero-icon name="ri:information-line" size="20" color="#9ca3af" />
+          <yy-icon name="ri:information-line" size="20" color="#9ca3af" />
           <text class="text-xs text-gray-400">订单服务由本平台提供</text>
         </view>
         <view>
@@ -25,11 +25,11 @@
               class="flex items-center justify-center rounded-lg"
               style="width: 40px; height: 40px; background-color: rgba(var(--u-type-primary-rgb), 0.1)"
             >
-              <zero-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
+              <yy-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
             </view>
             <view class="text-sm font-medium text-gray-800">{{ item.name }}</view>
           </view>
-          <zero-icon name="ri:arrow-right-s-line" size="20" color="#d1d5db" />
+          <yy-icon name="ri:arrow-right-s-line" size="20" color="#d1d5db" />
         </view>
       </view>
     </view>
