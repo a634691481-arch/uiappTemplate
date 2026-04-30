@@ -104,33 +104,14 @@
       </scroll-view>
     </view>
 
-    <!-- 景区等级筛选弹窗 -->
-    <u-popup v-model="showLevelPicker" mode="bottom" border-radius="16" height="40%">
-      <view class="flex flex-col h-full">
-        <view class="flex items-center justify-between flex-shrink-0 p-3 bg-white">
-          <view class="text-base font-medium text-gray-900">选择景区等级</view>
-          <u-icon name="close" size="24" color="#999" @click="showLevelPicker = false"></u-icon>
-        </view>
-        <scroll-view scroll-y class="flex-1 w-full">
-          <view class="flex flex-col gap-1 p-3">
-            <view
-              class="active:bg-gray-50 flex items-center justify-between p-3 rounded-md"
-              v-for="item in state.levelList"
-              :key="item"
-              @click="selectLevel(item)"
-            >
-              <view class="text-sm text-gray-700">{{ item }}</view>
-              <zero-icon
-                name="ri:check-line"
-                size="20"
-                :color="uni.$u.color.primary"
-                v-if="state.currentLevel === item"
-              />
-            </view>
-          </view>
-        </scroll-view>
-      </view>
-    </u-popup>
+    <yy-picker-modal
+      v-model="showLevelPicker"
+      title="选择景区等级"
+      :list="state.levelList"
+      :value="state.currentLevel"
+      :active-color="pagingConfig.color"
+      @change="selectLevel"
+    />
   </yy-paging>
 </template>
 
