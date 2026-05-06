@@ -1,9 +1,12 @@
 <template>
   <yy-paging v-model="state.dataList" @query="queryList" ref="paging" @scroll="scroll" v-bind="pagingConfig">
     <template #top>
-      <view class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
-        <view class="text-xs text-gray-400">订单服务由本平台提供</view>
-        <view class="">
+      <view class="flex items-center justify-between p-3 mx-3 mt-3 bg-white rounded-lg shadow-sm">
+        <view class="flex items-center gap-2">
+          <yy-icon name="ri:information-line" size="20" color="#9ca3af" />
+          <text class="text-xs text-gray-400">订单服务由本平台提供</text>
+        </view>
+        <view>
           <u-button type="primary" plain size="mini" @click="showExplain = true">开票说明</u-button>
         </view>
       </view>
@@ -12,7 +15,7 @@
       <!-- 功能列表 -->
       <view class="flex flex-col overflow-hidden bg-white rounded-lg shadow-sm">
         <view
-          class="last:border-b-0 active:bg-gray-50 flex items-center justify-between px-3 py-3 transition-colors border-b border-gray-100"
+          class="last:border-b-0 active:bg-gray-50 flex items-center justify-between px-3 py-3 transition-all border-b border-gray-100"
           v-for="(item, index) in state.menuList"
           :key="index"
           @click="navigateTo(item.url)"
@@ -20,31 +23,18 @@
           <view class="flex items-center gap-3">
             <view
               class="flex items-center justify-center rounded-lg"
-              style="width: 36px; height: 36px; background-color: rgba(var(--u-type-primary-rgb), 0.1)"
+              style="width: 40px; height: 40px; background-color: rgba(var(--u-type-primary-rgb), 0.1)"
             >
-              <zero-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
+              <yy-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
             </view>
-            <view class="text-sm text-gray-700">{{ item.name }}</view>
+            <view class="text-sm font-medium text-gray-800">{{ item.name }}</view>
           </view>
-          <u-icon name="arrow-right" size="22" color="#ccc"></u-icon>
+          <yy-icon name="ri:arrow-right-s-line" size="20" color="#d1d5db" />
         </view>
       </view>
     </view>
 
-    <!-- 开票说明弹窗 -->
-    <u-popup v-model="showExplain" mode="center" border-radius="16" width="80%">
-      <view class="p-4">
-        <view class="text-base font-medium text-center text-gray-900">开票说明</view>
-        <view class="flex flex-col gap-1 mt-3 text-sm leading-relaxed text-gray-600">
-          <view>1. 发票类型支持电子普通发票和增值税专用发票</view>
-          <view>2. 订单完成后可申请开票，开票金额以实际支付金额为准</view>
-          <view>3. 电子发票将在申请后 1-3 个工作日内发送至您的邮箱</view>
-          <view>4. 发票内容默认为旅游服务费，如有特殊需求请联系客服</view>
-          <view>5. 发票抬头信息可在「发票抬头」页面提前维护</view>
-        </view>
-        <u-button type="primary" class="mt-4" @click="showExplain = false">我知道了</u-button>
-      </view>
-    </u-popup>
+    <yy-tip-modal v-model="showExplain" title="开票说明" :list="explainList" />
   </yy-paging>
 </template>
 
@@ -61,6 +51,14 @@
   })
 
   const showExplain = ref(false)
+
+  const explainList = [
+    '发票类型支持电子普通发票和增值税专用发票',
+    '订单完成后可申请开票，开票金额以实际支付金额为准',
+    '电子发票将在申请后 1-3 个工作日内发送至您的邮箱',
+    '发票内容默认为旅游服务费，如有特殊需求请联系客服',
+    '发票抬头信息可在「发票抬头」页面提前维护',
+  ]
 
   const state = ref({
     isScroll: false,

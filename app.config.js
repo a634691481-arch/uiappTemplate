@@ -8,23 +8,23 @@ export default {
   versionName,
 
   login: {
-    url: '/pages/login/index'
+    url: '/pages/login/index',
   },
   imageUrl: 'http://cdn.diaodiandaren.com',
   index: {
-    url: '/pages/index/index'
+    url: '/pages/index/index',
   },
   error: {
-    url: '/pages/error/404/404'
+    url: '/pages/error/404/404',
   },
   targetTimezone: 8,
   logger: {
-    colorArr: ['#0095f8', '#67C23A']
+    colorArr: ['#0095f8', '#67C23A'],
   },
 
   color: {
     main: '#ff4444',
-    secondary: '#555555'
+    secondary: '#555555',
   },
   checkTokenPages: {
     /**
@@ -36,8 +36,8 @@ export default {
      * 注意3: 想要让 tabbar 页面必须登录才能访问，则需要手动在页面的onLoad里加 vk.pubfn.checkLogin();
      * 在无需登录的页面上执行kh或sys函数，也会自动判断是否登录，未登录会自动跳登录页面，登录成功后会自动返回本来要跳转的页面。
      */
-    mode: 1,
-    list: []
+    mode: 2,
+    list: ['/pages/tourGuide/index', '/pages/index/index', '/pages/consult/index', '/pages/my/index'],
   },
   checkSharePages: {
     /**
@@ -49,15 +49,15 @@ export default {
     mode: 0,
     // ['shareAppMessage', 'shareTimeline'],
     menus: ['shareAppMessage'],
-    list: ['/pages/index/*', '/pages/goods/*', '/pages_template/*']
+    list: ['/pages/index/*', '/pages/goods/*', '/pages_template/*'],
   },
   checkEncryptRequest: {
     mode: 1,
-    list: ['^template/test/pub/testEncryptRequest$', '^template/encrypt/(.*)']
+    list: ['^template/test/pub/testEncryptRequest$', '^template/encrypt/(.*)'],
   },
   staticUrl: {
     // Logo
-    logo: '/static/logo.png'
+    logo: '/static/logo.png',
   },
   myfn: myPubFunction,
   service: {
@@ -69,28 +69,28 @@ export default {
         dirname: 'public',
         authAction: 'user/pub/getUploadFileOptionsForExtStorage',
         domain: '',
-        groupUserId: false
+        groupUserId: false,
       },
 
       aliyun: {
         uploadData: {
           OSSAccessKeyId: '',
           policy: '',
-          signature: ''
+          signature: '',
         },
         action: 'https://xxx.oss-cn-hangzhou.aliyuncs.com',
         dirname: 'public',
         host: 'https://xxx.xxx.com',
-        groupUserId: false
-      }
-    }
+        groupUserId: false,
+      },
+    },
   },
   globalErrorCode: {
     'cloudfunction-unusual-timeout': '请求超时，但请求还在执行，请重新进入页面。',
     'cloudfunction-timeout': '请求超时，请重试！',
     'cloudfunction-system-error': '网络开小差了！',
     'cloudfunction-reaches-burst-limit': '系统繁忙，请稍后再试。',
-    'cloudfunction-network-unauthorized': '需要进行网络请求许可，若您已授权，请点击确定'
+    'cloudfunction-network-unauthorized': '需要进行网络请求许可，若您已授权，请点击确定',
   },
   interceptor: {
     login: function (obj) {
@@ -99,6 +99,6 @@ export default {
     fail: function (obj) {
       let { vk, params, res } = obj
       return false
-    }
-  }
+    },
+  },
 }

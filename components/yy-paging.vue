@@ -95,7 +95,7 @@
       <slot name="right" />
     </template>
     <template #loading>
-      <!-- <tasi-loading></tasi-loading> -->
+      <yy-loading></yy-loading>
     </template>
 
     <template #empty>
@@ -106,7 +106,6 @@
       <slot name="cell" :item="item" :index="index" />
     </template>
     <template #loadingMoreNoMore>
-      <!-- <slot name="loadingMoreNoMore" /> -->
       <yy-nomore :text="loadingMoreNoMoreText"></yy-nomore>
     </template>
     <template #refresherF2>

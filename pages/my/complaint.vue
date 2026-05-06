@@ -24,10 +24,10 @@
         <view class="flex items-center justify-between p-3 border-t border-gray-100">
           <view></view>
           <view class="flex items-center gap-2">
-            <u-button v-if="item.status === 'pending'" size="mini">撤销投诉</u-button>
-            <u-button v-if="item.status === 'replied'" type="primary" size="mini">查看回复</u-button>
+            <u-button v-if="item.status === 'pending'" type="primary" size="mini" plain>撤销投诉</u-button>
+            <u-button v-if="item.status === 'replied'" type="primary" plain size="mini">查看回复</u-button>
             <u-button v-if="item.status === 'resolved'" type="primary" plain size="mini">评价</u-button>
-            <u-button size="mini">查看详情</u-button>
+            <u-button size="mini" type="primary">查看详情</u-button>
           </view>
         </view>
       </view>

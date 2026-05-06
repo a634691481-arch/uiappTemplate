@@ -1,36 +1,52 @@
 <template>
   <u-popup v-model="props.modelValue" mode="bottom" border-radius="20" @close="closePopup">
-    <view class="flex flex-col gap-3 p-5 bg-white">
+    <view class="flex flex-col gap-3 p-3 bg-white">
       <view class="flex flex-col gap-1">
-        <view class="text-lg font-medium text-gray-800">获取您的昵称、头像</view>
-        <view class="text-gray-500">提供具有辨识度的用户中心界面</view>
+        <view class="text-lg font-semibold text-gray-900">获取您的昵称、头像</view>
+        <view class="text-sm text-gray-400">提供具有辨识度的用户中心界面</view>
       </view>
-      <view class=""></view>
-      <view class="flex items-center justify-center">
+
+      <view class="flex items-center justify-center py-2">
         <button open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
-          <view class="size-[3.75rem] bg-gray-50 overflow-hidden rounded-full border">
-            <u-image width="100%" height="100%" :src="funImage(state?.userInfo?.avatar || '')" mode="aspectFill" class="size-full"></u-image>
+          <view
+            class="bg-gray-50 flex items-center justify-center w-16 h-16 overflow-hidden border-2 rounded-full"
+            :style="{ borderColor: `${uni.$u.color.primary}30` }"
+          >
+            <u-image
+              width="100%"
+              height="100%"
+              :src="funImage(state?.userInfo?.avatar || '')"
+              mode="aspectFill"
+              class="size-full"
+            ></u-image>
           </view>
         </button>
       </view>
-      <!--  -->
-      <view class="flex items-center justify-between gap-10">
-        <view class="text-base font-medium text-gray-800">姓名</view>
 
-        <u-input v-model="state.userInfo.nickname" type="nickname" placeholder="请输入姓名" clearable class="!text-right" input-align="right"></u-input>
+      <view class="flex flex-col gap-3">
+        <view class="flex items-center justify-between gap-3">
+          <view class="text-sm font-medium text-gray-800">姓名</view>
+          <u-input
+            v-model="state.userInfo.nickname"
+            type="nickname"
+            placeholder="请输入姓名"
+            clearable
+            class="!text-right"
+            input-align="right"
+          ></u-input>
+        </view>
+        <view class="flex items-center justify-between gap-3">
+          <view class="text-sm font-medium text-gray-800">性别</view>
+          <u-radio-group v-model="state.userInfo.gender" direction="horizontal">
+            <u-radio name="男">男</u-radio>
+            <u-radio name="女">女</u-radio>
+          </u-radio-group>
+        </view>
       </view>
-      <view class="flex items-center justify-between gap-10">
-        <view class="text-base font-medium text-gray-800">性别</view>
-        <u-radio-group v-model="state.userInfo.gender" direction="horizontal">
-          <u-radio name="男">男</u-radio>
-          <u-radio name="女">女</u-radio>
-        </u-radio-group>
-      </view>
-      <view class=""></view>
 
-      <view class="w-full bg-[#67D7E5] py-2 rounded-full" @click="confirmSubmission" hover-class="opacity-80">
-        <view class="text-base text-center text-white">确认修改</view>
-      </view>
+      <u-button type="primary" shape="circle" :customStyle="{ height: '44px' }" @click="confirmSubmission">
+        确认修改
+      </u-button>
     </view>
   </u-popup>
 </template>

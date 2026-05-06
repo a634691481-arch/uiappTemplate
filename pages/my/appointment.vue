@@ -29,11 +29,11 @@
         <view class="flex items-center justify-between gap-2 p-3 border-t border-gray-100">
           <view class=""></view>
           <view class="flex items-center gap-2">
-            <u-button v-if="item.status === 'pending'" size="mini">取消预约</u-button>
-            <u-button v-if="item.status === 'pending'" type="primary" size="mini">去使用</u-button>
+            <u-button v-if="item.status === 'pending'" size="mini" plain type="primary">取消预约</u-button>
+            <u-button v-if="item.status === 'pending'" type="primary" plain size="mini">去使用</u-button>
             <u-button v-if="item.status === 'completed'" type="primary" plain size="mini">再次预约</u-button>
             <u-button v-if="item.status === 'cancelled'" type="primary" plain size="mini">重新预约</u-button>
-            <u-button size="mini">查看详情</u-button>
+            <u-button size="mini" type="primary">查看详情</u-button>
           </view>
         </view>
       </view>
@@ -91,36 +91,36 @@
 
     const mockData = {
       all: [
-        {
-          orderNo: '20240115001',
-          title: '故宫博物院',
-          date: '2024-02-10',
-          time: '09:00-12:00',
-          location: '北京市东城区景山前街4号',
-          status: 'pending',
-          statusText: '待使用',
-          statusType: 'primary',
-        },
-        {
-          orderNo: '20240114002',
-          title: '国家博物馆',
-          date: '2024-02-08',
-          time: '14:00-17:00',
-          location: '北京市东城区东长安街16号',
-          status: 'completed',
-          statusText: '已完成',
-          statusType: 'success',
-        },
-        {
-          orderNo: '20240113003',
-          title: '颐和园',
-          date: '2024-02-05',
-          time: '08:30-11:30',
-          location: '北京市海淀区新建宫门路19号',
-          status: 'cancelled',
-          statusText: '已取消',
-          statusType: 'info',
-        },
+        // {
+        //   orderNo: '20240115001',
+        //   title: '故宫博物院',
+        //   date: '2024-02-10',
+        //   time: '09:00-12:00',
+        //   location: '北京市东城区景山前街4号',
+        //   status: 'pending',
+        //   statusText: '待使用',
+        //   statusType: 'primary',
+        // },
+        // {
+        //   orderNo: '20240114002',
+        //   title: '国家博物馆',
+        //   date: '2024-02-08',
+        //   time: '14:00-17:00',
+        //   location: '北京市东城区东长安街16号',
+        //   status: 'completed',
+        //   statusText: '已完成',
+        //   statusType: 'success',
+        // },
+        // {
+        //   orderNo: '20240113003',
+        //   title: '颐和园',
+        //   date: '2024-02-05',
+        //   time: '08:30-11:30',
+        //   location: '北京市海淀区新建宫门路19号',
+        //   status: 'cancelled',
+        //   statusText: '已取消',
+        //   statusType: 'info',
+        // },
       ],
       pending: [
         {

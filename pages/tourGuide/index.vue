@@ -16,8 +16,8 @@
             <view class="text-xs text-gray-500">景区等级</view>
             <!-- <u-icon name="arrow-down" size="20" color="#999"></u-icon> -->
 
-            <zero-icon size="20" color="#999" name="ri:arrow-down-s-line" v-if="!showLevelPicker"></zero-icon>
-            <zero-icon size="20" color="#999" name="ri:arrow-up-s-line" v-else></zero-icon>
+            <yy-icon size="20" color="#999" name="ri:arrow-down-s-line" v-if="!showLevelPicker"></yy-icon>
+            <yy-icon size="20" color="#999" name="ri:arrow-up-s-line" v-else></yy-icon>
           </view>
         </view>
       </view>
@@ -38,7 +38,6 @@
           :class="current === index ? 'bg-white text-gray-900 font-medium' : 'text-gray-500'"
           v-for="(item, index) in state.cityList"
           :key="item"
-          @tap.stop="switchMenu(index)"
         >
           <view
             v-if="current === index"
@@ -72,6 +71,7 @@
                 :style="isMatch(item) ? { borderColor: uni.$u.color.primary } : {}"
                 v-for="(item, index) in group.list"
                 :key="index"
+                @click.stop="goToDetails(item)"
               >
                 <view class="w-28 h-28 bg-slate-200 relative flex-shrink-0 overflow-hidden rounded-lg">
                   <u-image :src="item.image" class="!size-28" mode="aspectFill" width="100%" height="100%"></u-image>
@@ -87,7 +87,14 @@
                   <view class="flex flex-col gap-1">
                     <view class="text-sm font-medium text-gray-900">{{ item.name }}</view>
                     <view class="flex flex-wrap gap-1">
-                      <u-tag v-for="tag in item.tags" :key="tag" :text="tag" size="mini" type="primary"></u-tag>
+                      <u-tag
+                        mode="light"
+                        v-for="tag in item.tags"
+                        :key="tag"
+                        :text="tag"
+                        size="mini"
+                        type="primary"
+                      ></u-tag>
                     </view>
                   </view>
                   <view class="text-xs text-gray-400">{{ item.address }}</view>
@@ -104,26 +111,13 @@
       </scroll-view>
     </view>
 
-    <!-- 景区等级筛选弹窗 -->
-    <u-popup v-model="showLevelPicker" mode="bottom" border-radius="16" height="40%">
-      <view class="flex flex-col h-full">
-        <view class="sticky top-0 z-10 flex items-center justify-between p-3 bg-white">
-          <view class="text-base font-medium text-gray-900">选择景区等级</view>
-          <u-icon name="close" size="24" color="#999" @click="showLevelPicker = false"></u-icon>
-        </view>
-        <scroll-view scroll-y class="flex flex-col gap-1 p-3">
-          <view
-            class="active:bg-gray-50 flex items-center justify-between p-3 rounded-md"
-            v-for="item in state.levelList"
-            :key="item"
-            @click="selectLevel(item)"
-          >
-            <view class="text-sm text-gray-700">{{ item }}</view>
-            <zero-icon name="ri:check-line" size="20" :color="uni.$u.color.primary" v-if="state.currentLevel === item" />
-          </view>
-        </scroll-view>
-      </view>
-    </u-popup>
+    <yy-picker-modal
+      v-model="showLevelPicker"
+      title="选择景区等级"
+      :list="state.levelList"
+      :value="state.currentLevel"
+      @change="selectLevel"
+    />
   </yy-paging>
 </template>
 
@@ -148,20 +142,22 @@
     dataList: [],
     groupedData: [],
     cityList: [
-      '南宁市',
-      '柳州市',
-      '桂林市',
-      '梧州市',
-      '北海市',
-      '防城港市',
-      '钦州市',
-      '贵港市',
-      '玉林市',
-      '百色市',
-      '贺州市',
-      '河池市',
-      '来宾市',
-      '崇左市',
+      '和平区',
+      '河东区',
+      '河西区',
+      '南开区',
+      '河北区',
+      '红桥区',
+      '东丽区',
+      '西青区',
+      '津南区',
+      '北辰区',
+      '武清区',
+      '宝坻区',
+      '滨海新区',
+      '宁河区',
+      '静海区',
+      '蓟州区',
     ],
     levelList: ['全部等级', '5A景区', '4A景区', '3A景区', '2A景区'],
     currentLevel: '全部等级',
@@ -216,6 +212,11 @@
       containerHeight.value =
         windowHeight - (topHeight + statusBarHeight + navHeight + tabbarHeight + safeAreaBottom + faultTolerantPx) + 'px'
     })
+  }
+
+  function goToDetails(city) {
+    console.log('🚀 goToDetails:', city)
+    vk.toast('功能开发中', 'none')
   }
 
   function scroll(e) {
@@ -336,105 +337,281 @@
     // await new Promise(resolve => setTimeout(resolve, 0))
 
     const mockData = {
-      南宁市: [
+      和平区: [
         {
-          name: '青秀山风景区',
-          level: '5A景区',
-          tags: ['乡村景区', '城市特色', '户外活动'],
-          address: '南宁市 青秀区',
+          name: '五大道文化旅游区',
+          level: '4A景区',
+          tags: ['历史文化', '洋楼建筑', '城市特色'],
+          address: '和平区 重庆道',
           image: 'https://picsum.photos/200/200?random=1',
         },
         {
-          name: '南宁动物园',
-          level: '4A景区',
-          tags: ['动植物园', '亲子', '家庭'],
-          address: '南宁市 西乡塘区',
+          name: '瓷房子',
+          level: '3A景区',
+          tags: ['城市特色', '博物馆', '艺术'],
+          address: '和平区 赤峰道',
           image: 'https://picsum.photos/200/200?random=2',
         },
         {
-          name: '大明山风景旅游区',
-          level: '4A景区',
-          tags: ['山水游玩'],
-          address: '南宁市 武鸣区',
+          name: '静园',
+          level: '3A景区',
+          tags: ['历史建筑', '城市特色'],
+          address: '和平区 鞍山道',
           image: 'https://picsum.photos/200/200?random=3',
         },
+      ],
+      河东区: [
         {
-          name: '广西药用植物园',
-          level: '4A景区',
-          tags: ['动植物园', '户外活动', '山水游玩'],
-          address: '南宁市 兴宁区',
+          name: '天津音乐街',
+          level: '3A景区',
+          tags: ['城市特色', '文化街区'],
+          address: '河东区 八纬路',
           image: 'https://picsum.photos/200/200?random=4',
         },
         {
-          name: '南宁园博园',
-          level: '4A景区',
-          tags: ['城市特色', '动植物园'],
-          address: '南宁市 邕宁区',
+          name: '元明清天妃宫遗址博物馆',
+          level: '3A景区',
+          tags: ['历史文化', '博物馆'],
+          address: '河东区 大直沽中路',
           image: 'https://picsum.photos/200/200?random=5',
         },
       ],
-      柳州市: [
+      河西区: [
         {
-          name: '柳州龙潭公园',
+          name: '天塔湖风景区',
           level: '4A景区',
-          tags: ['山水游玩', '城市特色'],
-          address: '柳州市 鱼峰区',
+          tags: ['城市地标', '观光', '城市特色'],
+          address: '河西区 卫津南路',
           image: 'https://picsum.photos/200/200?random=6',
         },
         {
-          name: '柳侯公园',
+          name: '天津博物馆',
           level: '4A景区',
-          tags: ['历史文化', '城市特色'],
-          address: '柳州市 城中区',
+          tags: ['博物馆', '文化', '亲子'],
+          address: '河西区 平江道',
           image: 'https://picsum.photos/200/200?random=7',
         },
       ],
-      桂林市: [
+      南开区: [
         {
-          name: '漓江风景区',
+          name: '天津古文化街旅游区',
           level: '5A景区',
-          tags: ['山水游玩', '自然风光'],
-          address: '桂林市 阳朔县',
+          tags: ['历史文化', '津门故里', '传统手艺'],
+          address: '南开区 通北路',
           image: 'https://picsum.photos/200/200?random=8',
         },
         {
-          name: '象山景区',
+          name: '周恩来邓颖超纪念馆',
           level: '4A景区',
-          tags: ['山水游玩', '城市特色'],
-          address: '桂林市 象山区',
+          tags: ['红色旅游', '历史文化', '亲子'],
+          address: '南开区 水上公园西路',
           image: 'https://picsum.photos/200/200?random=9',
         },
         {
-          name: '龙脊梯田',
+          name: '水上公园',
           level: '4A景区',
-          tags: ['乡村景区', '摄影'],
-          address: '桂林市 龙胜县',
+          tags: ['城市公园', '亲子', '休闲'],
+          address: '南开区 水上公园北路',
           image: 'https://picsum.photos/200/200?random=10',
         },
       ],
-      梧州市: [
+      河北区: [
         {
-          name: '骑楼城',
+          name: '意大利风情旅游区',
           level: '4A景区',
-          tags: ['历史文化', '城市特色'],
-          address: '梧州市 万秀区',
+          tags: ['历史文化', '欧陆风情', '城市特色'],
+          address: '河北区 光复道',
           image: 'https://picsum.photos/200/200?random=11',
         },
-      ],
-      北海市: [
         {
-          name: '银滩旅游区',
+          name: '天津之眼',
           level: '4A景区',
-          tags: ['海滨度假', '沙滩'],
-          address: '北海市 银海区',
+          tags: ['城市地标', '观光', '夜景'],
+          address: '河北区 三岔河口',
           image: 'https://picsum.photos/200/200?random=12',
         },
+      ],
+      红桥区: [
         {
-          name: '涠洲岛',
+          name: '平津战役纪念馆',
           level: '4A景区',
-          tags: ['海岛', '自然风光'],
-          address: '北海市 海城区',
+          tags: ['红色旅游', '历史文化', '亲子'],
+          address: '红桥区 平津道',
           image: 'https://picsum.photos/200/200?random=13',
+        },
+        {
+          name: '估衣街',
+          level: '2A景区',
+          tags: ['历史文化', '传统商业', '城市特色'],
+          address: '红桥区 估衣街',
+          image: 'https://picsum.photos/200/200?random=14',
+        },
+      ],
+      东丽区: [
+        {
+          name: '东丽湖温泉度假旅游区',
+          level: '4A景区',
+          tags: ['温泉度假', '休闲度假', '亲子'],
+          address: '东丽区 东丽湖路',
+          image: 'https://picsum.photos/200/200?random=15',
+        },
+      ],
+      西青区: [
+        {
+          name: '石家大院',
+          level: '4A景区',
+          tags: ['历史文化', '民俗', '古建筑'],
+          address: '西青区 杨柳青镇',
+          image: 'https://picsum.photos/200/200?random=16',
+        },
+        {
+          name: '精武门·中华武林园',
+          level: '4A景区',
+          tags: ['武术文化', '历史文化', '亲子'],
+          address: '西青区 精武镇',
+          image: 'https://picsum.photos/200/200?random=17',
+        },
+      ],
+      津南区: [
+        {
+          name: '小站练兵园',
+          level: '4A景区',
+          tags: ['历史文化', '军事', '城市特色'],
+          address: '津南区 小站镇',
+          image: 'https://picsum.photos/200/200?random=18',
+        },
+      ],
+      北辰区: [
+        {
+          name: '光合谷旅游度假区',
+          level: '4A景区',
+          tags: ['休闲度假', '亲子', '动物园'],
+          address: '北辰区 双街镇',
+          image: 'https://picsum.photos/200/200?random=19',
+        },
+      ],
+      武清区: [
+        {
+          name: '南湖旅游景区',
+          level: '4A景区',
+          tags: ['城市公园', '湿地', '休闲'],
+          address: '武清区 下朱庄街',
+          image: 'https://picsum.photos/200/200?random=20',
+        },
+        {
+          name: '津溪桃源',
+          level: '3A景区',
+          tags: ['乡村景区', '桃花', '休闲'],
+          address: '武清区 汊沽港镇',
+          image: 'https://picsum.photos/200/200?random=21',
+        },
+      ],
+      宝坻区: [
+        {
+          name: '广济寺',
+          level: '2A景区',
+          tags: ['历史文化', '宗教', '古建筑'],
+          address: '宝坻区 广济路',
+          image: 'https://picsum.photos/200/200?random=22',
+        },
+        {
+          name: '潮白河国家湿地公园',
+          level: '3A景区',
+          tags: ['自然风光', '湿地', '休闲'],
+          address: '宝坻区 潮白河沿岸',
+          image: 'https://picsum.photos/200/200?random=23',
+        },
+      ],
+      滨海新区: [
+        {
+          name: '天津滨海航母主题公园',
+          level: '4A景区',
+          tags: ['军事主题', '亲子', '主题乐园'],
+          address: '滨海新区 汉沽八卦滩',
+          image: 'https://picsum.photos/200/200?random=24',
+        },
+        {
+          name: '东疆湾沙滩景区',
+          level: '4A景区',
+          tags: ['海滨度假', '沙滩', '休闲'],
+          address: '滨海新区 东疆港',
+          image: 'https://picsum.photos/200/200?random=25',
+        },
+        {
+          name: '天津方特欢乐世界',
+          level: '4A景区',
+          tags: ['主题乐园', '亲子', '刺激'],
+          address: '滨海新区 中新生态城',
+          image: 'https://picsum.photos/200/200?random=26',
+        },
+        {
+          name: '海昌极地海洋公园',
+          level: '4A景区',
+          tags: ['海洋馆', '亲子', '动物'],
+          address: '滨海新区 响螺湾',
+          image: 'https://picsum.photos/200/200?random=27',
+        },
+        {
+          name: '大沽口炮台遗址博物馆',
+          level: '4A景区',
+          tags: ['历史文化', '海防', '亲子'],
+          address: '滨海新区 东炮台路',
+          image: 'https://picsum.photos/200/200?random=28',
+        },
+      ],
+      宁河区: [
+        {
+          name: '七里海湿地',
+          level: '3A景区',
+          tags: ['自然风光', '湿地', '生态旅游'],
+          address: '宁河区 七里海镇',
+          image: 'https://picsum.photos/200/200?random=29',
+        },
+      ],
+      静海区: [
+        {
+          name: '团泊湖温泉酒店',
+          level: '4A景区',
+          tags: ['温泉度假', '休闲', '会议'],
+          address: '静海区 团泊新城',
+          image: 'https://picsum.photos/200/200?random=30',
+        },
+        {
+          name: '萨马兰奇纪念馆',
+          level: '4A景区',
+          tags: ['体育文化', '博物馆', '亲子'],
+          address: '静海区 团泊新城',
+          image: 'https://picsum.photos/200/200?random=31',
+        },
+      ],
+      蓟州区: [
+        {
+          name: '盘山风景名胜区',
+          level: '5A景区',
+          tags: ['山水游玩', '自然风光', '登山'],
+          address: '蓟州区 官庄镇',
+          image: 'https://picsum.photos/200/200?random=32',
+        },
+        {
+          name: '黄崖关长城',
+          level: '4A景区',
+          tags: ['历史文化', '长城', '登山'],
+          address: '蓟州区 下营镇',
+          image: 'https://picsum.photos/200/200?random=33',
+        },
+        {
+          name: '独乐寺',
+          level: '4A景区',
+          tags: ['历史文化', '古建筑', '宗教'],
+          address: '蓟州区 武定街',
+          image: 'https://picsum.photos/200/200?random=34',
+        },
+        {
+          name: '梨木台风景区',
+          level: '4A景区',
+          tags: ['自然风光', '山水游玩', '森林'],
+          address: '蓟州区 下营镇',
+          image: 'https://picsum.photos/200/200?random=35',
         },
       ],
     }

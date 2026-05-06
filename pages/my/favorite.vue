@@ -24,7 +24,7 @@
             <view class="flex items-center justify-between mt-2">
               <view class="text-sm font-bold text-gray-900">{{ item.price ? '¥' + item.price : item.tag }}</view>
               <view class="flex items-center gap-1">
-                <u-icon name="star-fill" size="14" color="#f59e0b"></u-icon>
+                <u-icon name="star-fill" size="24" color="#f59e0b"></u-icon>
                 <view class="text-xs text-gray-400">{{ item.score }}</view>
               </view>
             </view>
@@ -33,8 +33,8 @@
         <view class="flex items-center justify-between p-3 border-t border-gray-100">
           <view class="text-xs text-gray-400">{{ item.category }}</view>
           <view class="flex items-center gap-2">
-            <u-button size="mini">查看详情</u-button>
-            <u-button size="mini" type="error" plain>取消收藏</u-button>
+            <u-button size="mini" type="primary" plain>取消收藏</u-button>
+            <u-button size="mini" type="primary">查看详情</u-button>
           </view>
         </view>
       </view>

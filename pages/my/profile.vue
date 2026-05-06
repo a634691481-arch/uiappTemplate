@@ -15,7 +15,7 @@
                 class="flex items-center justify-center rounded-lg"
                 style="width: 36px; height: 36px; background-color: rgba(var(--u-type-primary-rgb), 0.1)"
               >
-                <zero-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
+                <yy-icon :name="item.icon" size="20" :color="uni.$u.color.primary" />
               </view>
               <view class="dark:text-gray-200 text-sm text-gray-700">{{ item.label }}</view>
             </view>
@@ -29,10 +29,10 @@
     </yy-paging>
 
     <!-- 主题选择弹窗 -->
-    <yy-theme-picker v-model="showThemePicker" :active-color="pagingConfig.color" @change="onThemeChange" />
+    <yy-theme-picker v-model="showThemePicker" @change="onThemeChange" />
 
     <!-- 深色模式选择弹窗 -->
-    <yy-dark-mode-picker v-model="showDarkModePicker" :active-color="pagingConfig.color" @change="onDarkModeChange" />
+    <yy-dark-mode-picker v-model="showDarkModePicker" @change="onDarkModeChange" />
 
     <view
       class="dark:bg-gray-900 dark:border-gray-800 fixed bottom-0 left-0 right-0 grid grid-cols-2 gap-2 p-3 bg-white border-t"
@@ -90,8 +90,7 @@
       { label: '个性签名', icon: 'ri:edit-line', value: '探索世界，发现美好', field: 'signature' },
       { label: '主题', icon: 'ri:palette-line', value: '默认主题', field: 'theme' },
       // { label: '深色模式', icon: 'ri:moon-line', value: '关闭', field: 'darkMode' },
-      // 清除缓存
-      { label: '清除缓存', icon: 'ri:delete-bin-line', value: '0.00MB', field: 'clearCache' },
+      // { label: '清除缓存', icon: 'ri:delete-bin-line', value: '0.00MB', field: 'clearCache' },
     ],
   })
 

@@ -22,7 +22,8 @@
             :style="{ borderRadius: shape === 'circle' ? '50%' : $u.addUnit(borderRadius), backgroundColor: bgColor }"
         >
             <slot v-if="hasSlot('loading')" name="loading" />
-            <u-icon v-else :name="loadingIcon" :width="width" :height="height"></u-icon>
+            <!-- <u-icon v-else :name="loadingIcon" :width="width" :height="height"></u-icon> -->
+             <u-loading mode="circle" color="var(--u-type-primary" :size="width" v-else ></u-loading>
         </view>
         <view
             v-if="showError && isError && !loading"
