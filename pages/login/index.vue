@@ -2,12 +2,12 @@
   <yy-paging v-model="state.dataList" @query="queryList" ref="paging" @scroll="scroll" v-bind="pagingConfig">
     <view class="flex flex-col overflow-hidden">
       <!-- 背景渐变装饰 -->
-      <!-- <view
+      <view
         class="h-80 absolute top-0 left-0 right-0"
         :style="{
           background: `linear-gradient(180deg, ${uni.$u.color.primary}15 0%, transparent 100%)`,
         }"
-      ></view> -->
+      ></view>
 
       <!-- 内容区 -->
       <view class="relative z-10 flex flex-col flex-1 px-6 pt-12">
@@ -97,6 +97,7 @@
           shape="circle"
           :custom-style="{ height: '44px', width: '60%' }"
           ripple
+          :loading="loginLoading"
           :disabled="loginLoading"
           open-type="getPhoneNumber"
           @getphonenumber="getPhoneNumber"
