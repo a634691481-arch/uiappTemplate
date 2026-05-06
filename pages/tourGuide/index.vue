@@ -87,7 +87,14 @@
                   <view class="flex flex-col gap-1">
                     <view class="text-sm font-medium text-gray-900">{{ item.name }}</view>
                     <view class="flex flex-wrap gap-1">
-                      <u-tag v-for="tag in item.tags" :key="tag" :text="tag" size="mini" type="primary"></u-tag>
+                      <u-tag
+                        mode="light"
+                        v-for="tag in item.tags"
+                        :key="tag"
+                        :text="tag"
+                        size="mini"
+                        type="primary"
+                      ></u-tag>
                     </view>
                   </view>
                   <view class="text-xs text-gray-400">{{ item.address }}</view>
