@@ -210,6 +210,13 @@
 				"disableScroll": true,
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/search/index",
+			"style": {
+				"disableScroll": true,
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"globalStyle": {
