@@ -2,12 +2,12 @@
   <yy-paging v-model="state.dataList" @query="queryList" ref="paging" @scroll="scroll" v-bind="pagingConfig">
     <view class="flex flex-col overflow-hidden">
       <!-- 背景渐变装饰 -->
-      <!-- <view
+      <view
         class="h-80 absolute top-0 left-0 right-0"
         :style="{
           background: `linear-gradient(180deg, ${uni.$u.color.primary}15 0%, transparent 100%)`,
         }"
-      ></view> -->
+      ></view>
 
       <!-- 内容区 -->
       <view class="relative z-10 flex flex-col flex-1 px-6 pt-12">
@@ -90,20 +90,24 @@
 
   <!-- 底部固定按钮 -->
   <view class="fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-gray-100">
-    <view class="flex flex-col gap-3 p-3">
-      <u-button
-        type="primary"
-        shape="circle"
-        :custom-style="{ height: '44px', width: '60%' }"
-        ripple
-        @getphonenumber="onPhoneLogin"
-        open-type="getPhoneNumber"
-      >
-        <view class="flex items-center justify-center gap-2">
-          <!-- <yy-icon name="ri:smartphone-line" size="18" color="#ffffff" /> -->
-          <text class="text-sm font-medium">手机号登录</text>
-        </view>
-      </u-button>
+    <view class="flex flex-col gap-2 p-3 pb-4">
+      <view class="flex items-center justify-center">
+        <u-button
+          type="primary"
+          shape="circle"
+          :custom-style="{ height: '44px', width: '60%' }"
+          ripple
+          :loading="loginLoading"
+          :disabled="loginLoading"
+          open-type="getPhoneNumber"
+          @getphonenumber="getPhoneNumber"
+        >
+          <view class="flex items-center justify-center gap-2">
+            <!-- <yy-icon name="ri:smartphone-line" size="18" color="#ffffff" /> -->
+            <text class="text-sm font-medium">{{ loginLoadingText }}</text>
+          </view>
+        </u-button>
+      </view>
 
       <!-- 用户协议 -->
       <view class="flex items-center justify-center">
@@ -117,6 +121,26 @@
       </view>
     </view>
   </view>
+
+  <!-- 登录协议确认弹框 -->
+  <u-modal
+    v-model="state.showAgreeModal"
+    title="温馨提示"
+    :show-cancel-button="true"
+    cancel-text="不同意"
+    confirm-text="同意并登录"
+    :confirm-color="uni.$u.color.primary"
+    @cancel="onAgreeCancel"
+    @confirm="onAgreeConfirm"
+  >
+    <view class="px-4 py-3 text-sm leading-relaxed text-gray-600">
+      登录即表示您已阅读并同意
+      <text :style="{ color: uni.$u.color.primary }" @click="viewAgreement('user')">《用户协议》</text>
+      和
+      <text :style="{ color: uni.$u.color.primary }" @click="viewAgreement('privacy')">《隐私政策》</text>
+      ，我们将依据上述协议为您提供服务。
+    </view>
+  </u-modal>
 </template>
 
 <script setup>
@@ -137,12 +161,19 @@
     isScroll: false,
     dataList: [],
     agree: false,
+    showAgreeModal: false,
   })
+
+  // 缓存待登录的授权 event（用户同意协议后继续使用）
+  const pendingLoginEvent = ref(null)
 
   const paging = ref()
 
   onLoad(options => {
     console.log('🚀 页面加载:', options)
+
+    // let originalPage = vk.navigate.getOriginalPage()
+    // console.log('🚀 ~ :151 ~ originalPage:', originalPage)
   })
 
   onShow(options => {
@@ -158,37 +189,102 @@
     paging.value?.complete([1])
   }
 
-  // 协议校验
-  function checkAgree() {
+  // 登录 loading 状态
+  const loginLoading = ref(false)
+  const loginLoadingText = ref('手机号登录')
+
+  // 手机号一键登录入口：先校验授权 event，再判断是否需弹协议框
+  function getPhoneNumber(event) {
+    console.log('🚀 ~ getPhoneNumber ~ event:', event)
+
+    // 未勾选协议 → 弹框让用户确认
     if (!state.value.agree) {
-      uni.showToast({ title: '请先阅读并同意用户协议及隐私政策', icon: 'none' })
-      return false
+      pendingLoginEvent.value = event
+      state.value.showAgreeModal = true
+      return
     }
-    return true
+
+    if (event.detail.errno == 104) {
+      vk.toast('小程序隐私协议未授权, 请稍后重试。', 'none', 1000)
+      return
+    }
+    if (event.detail.errMsg !== 'getPhoneNumber:ok') {
+      vk.toast('授权失败，请点击手机号授权后登录', 'none', 1000)
+      return
+    }
+
+    doLogin(event)
   }
 
-  // 手机号登录
-  function onPhoneLogin() {
-    if (!checkAgree()) return
-    uni.showToast({ title: '手机号登录', icon: 'none' })
-    // TODO: 跳转手机号登录页或弹出输入框
+  // 协议弹框：不同意
+  function onAgreeCancel() {
+    state.value.showAgreeModal = false
+    pendingLoginEvent.value = null
   }
 
-  // 微信登录
-  function onWechatLogin() {
-    if (!checkAgree()) return
-    uni.showToast({ title: '微信登录', icon: 'none' })
+  // 协议弹框：同意并登录
+  function onAgreeConfirm() {
+    state.value.agree = true
+    state.value.showAgreeModal = false
+    const event = pendingLoginEvent.value
+    pendingLoginEvent.value = null
+    if (event) doLogin(event)
   }
 
-  // Apple 登录
-  function onAppleLogin() {
-    if (!checkAgree()) return
-    uni.showToast({ title: 'Apple 登录', icon: 'none' })
-  }
+  // 执行登录核心流程
+  async function doLogin(event) {
+    loginLoading.value = true
+    loginLoadingText.value = '正在获取微信授权...'
+    vk.showLoading({ title: '正在获取微信授权...', mask: true })
 
-  // 游客登录
-  function onVisitorLogin() {
-    uni.showToast({ title: '游客登录', icon: 'none' })
+    try {
+      const wechatLoginResult = await uni.login()
+
+      loginLoadingText.value = '正在验证身份...'
+      vk.showLoading({ title: '正在验证身份...', mask: true })
+      const { data: authData } = await api.getOpenid({
+        wxCode: wechatLoginResult.code,
+        channelCode: '05',
+      })
+
+      loginLoadingText.value = '正在获取手机号...'
+      vk.showLoading({ title: '正在获取手机号...', mask: true })
+      const phoneAuthResult = await api.getPhoneNumber({
+        openId: authData.openId,
+        unionId: authData.unionId,
+        phoneCode: event?.detail?.code,
+        channelCode: '05',
+      })
+
+      console.log('phoneAuthResult==> ', phoneAuthResult)
+      if (!phoneAuthResult.status) {
+        loginLoading.value = false
+        vk.hideLoading()
+        return vk.alert('用户不存在，无法登录，请稍后重试或联系管理员', () => {
+          vk.redirectTo('/pages/index/index')
+        })
+      }
+
+      vk.setStorageSync('uni_id_token', phoneAuthResult.data)
+      vk.setStorageSync('uni_id_token_expired', Date.now() + 365 * 24 * 60 * 60 * 1000) // 过期时间设置为一年后
+
+      loginLoadingText.value = '正在获取用户信息...'
+      vk.showLoading({ title: '正在获取用户信息...', mask: true })
+      await vk.vuex.dispatch('$user/getUserInfo')
+
+      loginLoadingText.value = '登录成功，正在跳转...'
+      vk.showLoading({ title: '登录成功，正在跳转...', mask: true })
+
+      const originalPage = vk.navigate.getOriginalPage()
+      vk.redirectTo(originalPage?.url || '/pages/index/index')
+    } catch (error) {
+      console.error('登录失败:', error)
+      vk.toast('登录失败，请稍后重试', 'none', 2000)
+    } finally {
+      loginLoading.value = false
+      loginLoadingText.value = '手机号登录'
+      vk.hideLoading()
+    }
   }
 
   // 查看协议

@@ -18,8 +18,14 @@ const install = () => {
 
 // API 封装
 const api = {
-  // 发送短信验证码
-  sendSms: params => uni.$u.http.post('/api/sms/send', params),
+  // 获取openid
+  getOpenid: params => http.post(`/userEntity/wxLogin`, params, {}),
+
+  //获取手机号码
+  getPhoneNumber: params => http.post(`/loginWx`, params, {}),
+
+  //获取用户信息
+  getInfo: params => http.get(`/getSysUserInfo`, params, {}),
 }
 
 export { api }

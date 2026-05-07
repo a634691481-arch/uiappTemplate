@@ -3,20 +3,31 @@
     <view class="flex flex-col gap-3 p-3">
       <!-- 用户信息 -->
       <view class="flex items-center justify-between gap-3 p-3 rounded-lg">
-        <view class="flex items-center gap-2" @click="openEdit">
+        <view class="flex items-center gap-2" @click="onUserClick">
           <view
             class="size-14 bg-gray-50 flex items-center justify-center overflow-hidden border-2 rounded-full"
             :style="{ borderColor: `${uni.$u.color.primary}30` }"
           >
-            <u-image :src="userInfo.avatar" width="100%" height="100%" class="!size-full" mode="aspectFill"></u-image>
+            <u-image
+              v-if="isLogin && userInfo.avatar"
+              :src="userInfo.avatar"
+              width="100%"
+              height="100%"
+              class="!size-full"
+              mode="aspectFill"
+            ></u-image>
+            <yy-icon v-else name="ri:user-3-line" size="32" color="#9ca3af" />
           </view>
 
           <view class="flex flex-col">
-            <view class="text-base font-medium text-gray-900">{{ userInfo.nickname }}</view>
-            <view class="text-xs text-gray-400 mt-0.5">账号: 18599996666</view>
+            <view class="text-base font-medium text-gray-900">{{ isLogin ? userInfo.nickname || '设置昵称' : '点击登录' }}</view>
+            <view class="text-xs text-gray-400 mt-0.5">
+              {{ isLogin ? (userInfo.mobile ? `账号: ${userInfo.mobile}` : '欢迎回来') : '登录后享受更多会员权益' }}
+            </view>
           </view>
         </view>
         <view
+          v-if="isLogin"
           class="size-8 flex items-center justify-center rounded-lg"
           style="background-color: rgba(var(--u-type-primary-rgb), 0.05)"
           @click.stop="navigateTo('/pages/my/profile')"
@@ -135,11 +146,37 @@
   })
 
   const showEdit = ref(false)
-  const userInfo = ref({
-    nickname: '昵称',
-    avatar: 'https://picsum.photos/200/300',
-    gender: '男',
-  })
+
+  // 登录状态
+  const isLogin = ref(false)
+
+  // 默认未登录占位
+  const defaultUserInfo = {
+    nickname: '',
+    avatar: '',
+    mobile: '',
+    gender: '',
+  }
+
+  const userInfo = ref({ ...defaultUserInfo })
+
+  // 刷新登录状态与用户信息
+  function refreshLoginState() {
+    const token = vk.getToken && vk.getToken()
+    if (token) {
+      isLogin.value = true
+      const info = vk.getVuex('$user.userInfo') || {}
+      userInfo.value = {
+        nickname: info.nickname || info.username || '设置昵称',
+        avatar: info.avatar || info.avatar_file?.url || '',
+        mobile: info.mobile || info.phone || '',
+        gender: info.gender === 1 ? '男' : info.gender === 2 ? '女' : '',
+      }
+    } else {
+      isLogin.value = false
+      userInfo.value = { ...defaultUserInfo }
+    }
+  }
 
   const state = ref({
     isScroll: false,
@@ -179,10 +216,13 @@
 
   onLoad(options => {
     console.log('🚀 页面加载:', options)
+    refreshLoginState()
   })
 
   onShow(options => {
     console.log('🚀 页面显示:', options)
+    // 从登录页返回时刷新状态
+    refreshLoginState()
   })
 
   function navigateTo(url) {
@@ -199,6 +239,15 @@
     paging.value?.complete([1])
   }
 
+  // 头像/昵称区点击：未登录跳登录页，已登录打开编辑弹框
+  function onUserClick() {
+    if (!isLogin.value) {
+      vk.navigateTo('/pages/login/index')
+      return
+    }
+    showEdit.value = true
+  }
+
   function openEdit() {
     showEdit.value = true
   }
@@ -207,6 +256,8 @@
     if (data?.nickname) userInfo.value.nickname = data.nickname
     if (data?.avatar) userInfo.value.avatar = data.avatar
     if (data?.gender !== undefined) userInfo.value.gender = data.gender === 1 ? '男' : '女'
+    // 编辑成功后重新同步一次 vuex
+    refreshLoginState()
   }
 </script>
 
