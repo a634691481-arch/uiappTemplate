@@ -20,7 +20,9 @@
           </view>
 
           <view class="flex flex-col">
-            <view class="text-base font-medium text-gray-900">{{ isLogin ? userInfo.nickname || '设置昵称' : '点击登录' }}</view>
+            <view class="text-base font-medium text-gray-900">
+              {{ isLogin ? userInfo.nickname || '设置昵称' : '点击登录' }}
+            </view>
             <view class="text-xs text-gray-400 mt-0.5">
               {{ isLogin ? (userInfo.mobile ? `账号: ${userInfo.mobile}` : '欢迎回来') : '登录后享受更多会员权益' }}
             </view>

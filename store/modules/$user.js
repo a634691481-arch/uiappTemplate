@@ -10,15 +10,16 @@ export default {
     inviteCode: $user.inviteCode || '',
     historyData: $user.historyData || [],
     positioning: $user.positioning,
-    preLoginInfo: $user.preLoginInfo
+    preLoginInfo: $user.preLoginInfo,
   },
   getters: {},
   actions: {
     // 获取用户信息
     async getUserInfo(state, userInfo) {
       let res = await api.getUserInfo()
-      vk.vuex.set('$user.userInfo', res.data.userInfo)
-    }
+      console.log('🚀 ~ :20 ~ res:', res)
+      vk.vuex.set('$user.userInfo', res.data)
+    },
   },
-  mutations: {}
+  mutations: {},
 }

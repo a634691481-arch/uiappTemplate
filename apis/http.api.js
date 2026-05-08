@@ -8,24 +8,23 @@ const currentEnvironment = 'prod' // 'pre' | 'prod' | 'test' 默认预览环境
 
 const BASE_URL = ENV_MAP[currentEnvironment] || ENV_MAP.pre
 
-const install = () => {
-  uni.$u.http.setConfig({
-    baseUrl: BASE_URL,
-  })
-  // 挂载到全局，方便各页面直接调用
-  uni.$api = api
+const install = app => {
+  uni.$u.http.setConfig({ baseUrl: BASE_URL })
+  globalThis.api = api
 }
 
 // API 封装
+const req = (method, url) => p => uni.$u.http[method](url, p)
+
 const api = {
   // 获取openid
-  getOpenid: params => http.post(`/userEntity/wxLogin`, params, {}),
+  getOpenid: req('post', '/userEntity/wxLogin'),
 
-  //获取手机号码
-  getPhoneNumber: params => http.post(`/loginWx`, params, {}),
+  // 获取手机号码
+  getPhoneNumber: req('post', '/loginWx'),
 
-  //获取用户信息
-  getInfo: params => http.get(`/getSysUserInfo`, params, {}),
+  // 获取用户信息
+  getUserInfo: req('get', '/getSysUserInfo'),
 }
 
 export { api }

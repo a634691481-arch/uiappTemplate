@@ -171,6 +171,7 @@
 
   onLoad(options => {
     console.log('🚀 页面加载:', options)
+    console.log('api==> ', api)
 
     // let originalPage = vk.navigate.getOriginalPage()
     // console.log('🚀 ~ :151 ~ originalPage:', originalPage)
@@ -257,13 +258,6 @@
       })
 
       console.log('phoneAuthResult==> ', phoneAuthResult)
-      if (!phoneAuthResult.status) {
-        loginLoading.value = false
-        vk.hideLoading()
-        return vk.alert('用户不存在，无法登录，请稍后重试或联系管理员', () => {
-          vk.redirectTo('/pages/index/index')
-        })
-      }
 
       vk.setStorageSync('uni_id_token', phoneAuthResult.data)
       vk.setStorageSync('uni_id_token_expired', Date.now() + 365 * 24 * 60 * 60 * 1000) // 过期时间设置为一年后
@@ -278,8 +272,8 @@
       const originalPage = vk.navigate.getOriginalPage()
       vk.redirectTo(originalPage?.url || '/pages/index/index')
     } catch (error) {
-      console.error('登录失败:', error)
-      vk.toast('登录失败，请稍后重试', 'none', 2000)
+      // console.error('登录失败:', error)
+      // vk.toast('登录失败，请稍后重试', 'none', 2000)
     } finally {
       loginLoading.value = false
       loginLoadingText.value = '手机号登录'
