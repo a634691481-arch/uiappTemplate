@@ -39,7 +39,7 @@ export function createApp() {
   app.use(store)
 
   // 引入 API 集中管理
-  httpApi.install(app)
+  httpApi.install()
 
   // 引入 http 拦截器
   httpInterceptor.install()
