@@ -485,41 +485,22 @@ function onPageScroll(e) {
   if (scrollTop > lastScrollTop.value) {
     isScrollingDown.value = true
     scrollDirection.value = 'down'
-    onScrollDown(scrollTop)
+  
   } else {
     isScrollingDown.value = false
     scrollDirection.value = 'up'
-    onScrollUp(scrollTop)
+ 
   }
 
   lastScrollTop.value = scrollTop
 
-  if (scrollTop > 200) {
+  if (scrollTop >100) {
     isNavbarWhite.value = true
   } else {
     isNavbarWhite.value = false
   }
 }
 
-function onScrollDown(scrollTop) {
-  console.log('📉 页面下滑中，滚动距离:', scrollTop)
-
-  if (scrollTop > 500 && scrollTop < 1000) {
-    console.log('触发：下滑超过500rpx')
-  }
-
-  if (scrollTop > 1000) {
-    console.log('触发：下滑超过1000rpx')
-  }
-}
-
-function onScrollUp(scrollTop) {
-  console.log('📈 页面上滑中，滚动距离:', scrollTop)
-
-  if (scrollTop < 100) {
-    console.log('回到顶部区域')
-  }
-}
 </script>
 
 <style lang="scss" scoped>
