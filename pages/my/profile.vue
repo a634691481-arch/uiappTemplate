@@ -161,7 +161,8 @@
       content: '确定要退出登录吗？',
       success: res => {
         if (res.confirm) {
-          uni.showToast({ title: '已退出登录', icon: 'none' })
+          // uni.showToast({ title: '已退出登录', icon: 'none' })
+          vk.myfn.logout()
         }
       },
     })
