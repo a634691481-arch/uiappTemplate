@@ -171,6 +171,7 @@
 
   onLoad(options => {
     console.log('🚀 页面加载:', options)
+    console.log('api==> ', api)
 
     // let originalPage = vk.navigate.getOriginalPage()
     // console.log('🚀 ~ :151 ~ originalPage:', originalPage)

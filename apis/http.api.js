@@ -8,12 +8,9 @@ const currentEnvironment = 'prod' // 'pre' | 'prod' | 'test' 默认预览环境
 
 const BASE_URL = ENV_MAP[currentEnvironment] || ENV_MAP.pre
 
-const install = () => {
-  uni.$u.http.setConfig({
-    baseUrl: BASE_URL,
-  })
-  // 挂载到全局，方便各页面直接调用
-  uni.$api = api
+const install = app => {
+  uni.$u.http.setConfig({ baseUrl: BASE_URL })
+  globalThis.api = api
 }
 
 // API 封装
