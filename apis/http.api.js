@@ -14,15 +14,17 @@ const install = app => {
 }
 
 // API 封装
+const req = (method, url) => p => uni.$u.http[method](url, p)
+
 const api = {
   // 获取openid
-  getOpenid: params => http.post(`/userEntity/wxLogin`, params, {}),
+  getOpenid: req('post', '/userEntity/wxLogins'),
 
-  //获取手机号码
-  getPhoneNumber: params => http.post(`/loginWx`, params, {}),
+  // 获取手机号码
+  getPhoneNumber: req('post', '/loginWx'),
 
-  //获取用户信息
-  getInfo: params => http.get(`/getSysUserInfo`, params, {}),
+  // 获取用户信息
+  getUserInfo: req('get', '/getSysUserInfo'),
 }
 
 export { api }
