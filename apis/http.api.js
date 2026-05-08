@@ -18,7 +18,7 @@ const req = (method, url) => p => uni.$u.http[method](url, p)
 
 const api = {
   // 获取openid
-  getOpenid: req('post', '/userEntity/wxLogins'),
+  getOpenid: req('post', '/userEntity/wxLogin'),
 
   // 获取手机号码
   getPhoneNumber: req('post', '/loginWx'),

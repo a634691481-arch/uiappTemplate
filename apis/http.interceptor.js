@@ -48,6 +48,7 @@ const install = () => {
 
   // 响应拦截
   uni.$u.http.interceptor.response = res => {
+    console.log('🚀 ~ :51 ~ install ~ res:', res)
     // uview-pro 的响应结构：业务数据在 res.data 中
     const businessData = res.data || {}
     const code = businessData.code || businessData.status
@@ -71,19 +72,22 @@ const install = () => {
         uni.hideLoading()
 
         // 如果正在显示弹框，则不重复显示
-        if (isShowingAlert) return Promise.reject(res)
+        // if (isShowingAlert) return Promise.reject(res)
 
-        isShowingAlert = true
-        uni.showModal({
-          title: '提示',
-          content: msg || '登录已过期,请重新登录',
-          showCancel: false,
-          success: () => {
-            isShowingAlert = false
-            uni.reLaunch({ url: '/pages/login/index' })
-          },
-        })
-        return Promise.reject(res)
+        // isShowingAlert = true
+        // uni.showModal({
+        //   title: '提示',
+        //   content: msg || '登录已过期,请重新登录',
+        //   showCancel: false,
+        //   success: () => {
+        //     isShowingAlert = false
+        //     uni.reLaunch({ url: '/pages/login/index' })
+        //   },
+        // })
+        // return Promise.reject(res)
+
+        uni.hideLoading()
+        return showErrorAlert(res, '登录已过期,请重新登录')
       },
 
       // 无权限

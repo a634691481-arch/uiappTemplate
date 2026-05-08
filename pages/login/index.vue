@@ -272,7 +272,7 @@
       const originalPage = vk.navigate.getOriginalPage()
       vk.redirectTo(originalPage?.url || '/pages/index/index')
     } catch (error) {
-      console.error('登录失败:', error)
+      // console.error('登录失败:', error)
       // vk.toast('登录失败，请稍后重试', 'none', 2000)
     } finally {
       loginLoading.value = false
