@@ -62,4 +62,15 @@ myfn.buildErrorSummary = res => {
   return parts.join('\n\n')
 }
 
+// 退出登录
+myfn.logout = async () => {
+  vk.showLoading('退出登录中...')
+  vk.setStorageSync('uni_id_token_expired', {})
+  vk.setStorageSync('uni_id_token', '')
+  vk.setVuex('$user', {})
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  vk.hideLoading()
+  vk.reLaunch('/pages/index/index')
+}
+
 export default myfn
