@@ -389,7 +389,6 @@ util.checkNeedLogin = function(obj) {
 		});
 		pageNeedLogin = res.key;
 		if (pageNeedLogin) {
-			console.log('vk.checkToken()==> ', !vk.checkToken());
 
 			// 本地判断token有效期(联网会浪费性能)
 			if (!vk.checkToken()) {
