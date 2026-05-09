@@ -212,7 +212,7 @@
 			}
 		},
 		{
-			"path": "pages/search/index",
+			"path": "pages/index/search",
 			"style": {
 				"disableScroll": true,
 				"enablePullDownRefresh": false
