@@ -444,15 +444,11 @@
   })
 
   function openCitySelect() {
-    uni.navigateTo({
-      url: '/pages_sub/index/city-select?city=' + currentCity.value,
-    })
+    vk.navigateTo('/pages_sub/index/city-select?city=' + currentCity.value)
   }
 
   function goToSearch() {
-    uni.navigateTo({
-      url: '/pages/search/index',
-    })
+    vk.navigateTo('/pages/index/search')
   }
 
   function openThirdMiniProgram() {
