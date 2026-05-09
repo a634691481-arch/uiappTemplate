@@ -16,8 +16,14 @@
             <view class="text-xs text-gray-500">景区等级</view>
             <!-- <u-icon name="arrow-down" size="20" color="#999"></u-icon> -->
 
-            <yy-icon size="20" color="#999" name="ri:arrow-down-s-line" v-if="!showLevelPicker"></yy-icon>
-            <yy-icon size="20" color="#999" name="ri:arrow-up-s-line" v-else></yy-icon>
+            <yy-icon
+              size="20"
+              color="#999"
+              name="ri:arrow-down-s-line"
+              v-if="!showLevelPicker"
+              :showLoading="false"
+            ></yy-icon>
+            <yy-icon size="20" color="#999" name="ri:arrow-up-s-line" v-else :showLoading="false"></yy-icon>
           </view>
         </view>
       </view>
