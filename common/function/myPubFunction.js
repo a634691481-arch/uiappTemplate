@@ -17,7 +17,6 @@ myfn.previewImages = urls => {
 
 // 复制到剪贴板（兼容微信小程序 & H5）
 myfn.copyToClipboard = text => {
-  console.log('🚀 ~ :20 ~ text:', text)
   // #ifdef H5
   if (navigator.clipboard) {
     navigator.clipboard
