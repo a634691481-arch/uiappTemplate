@@ -50,6 +50,7 @@
                             :name="elIconPath(index)" 
                             :color="elColor(index)"
                             img-mode="scaleToFill"
+                            :showLoading="false"
                           </yy-icon>
                           
 
