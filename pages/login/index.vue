@@ -234,6 +234,7 @@
 
   // 执行登录核心流程
   async function doLogin(event) {
+    console.log('🚀 ~ :237 ~ doLogin ~ event:', event)
     loginLoading.value = true
     loginLoadingText.value = '正在获取微信授权...'
     vk.showLoading({ title: '正在获取微信授权...', mask: true })
@@ -269,8 +270,10 @@
       loginLoadingText.value = '登录成功，正在跳转...'
       vk.showLoading({ title: '登录成功，正在跳转...', mask: true })
 
-      const originalPage = vk.navigate.getOriginalPage()
-      vk.redirectTo(originalPage?.url || '/pages/index/index')
+      // const originalPage = vk.navigate.getOriginalPage()
+      // vk.redirectTo(originalPage?.url || '/pages/index/index')
+
+      vk.navigate.originalTo()
     } catch (error) {
       // console.error('登录失败:', error)
       // vk.toast('登录失败，请稍后重试', 'none', 2000)
