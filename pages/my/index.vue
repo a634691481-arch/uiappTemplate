@@ -244,7 +244,7 @@
   // 头像/昵称区点击：未登录跳登录页，已登录打开编辑弹框
   function onUserClick() {
     if (!isLogin.value) {
-      vk.navigateTo('/pages/login/index')
+      vk.myfn.navigateToLogin('/pages/my/index')
       return
     }
     showEdit.value = true
