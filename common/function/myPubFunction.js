@@ -73,4 +73,12 @@ myfn.logout = async () => {
   vk.reLaunch('/pages/index/index')
 }
 
+// 跳转登录页面
+myfn.navigateToLogin = url => {
+  vk.navigateToLogin({
+    mode: 'navigateTo',
+    redirectUrl: url || '/pages/index/index',
+  })
+}
+
 export default myfn
