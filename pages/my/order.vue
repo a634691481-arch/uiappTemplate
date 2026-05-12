@@ -192,19 +192,7 @@
           statusType: 'success',
         },
       ],
-      cancelled: [
-        {
-          orderNo: '20240112004',
-          title: '天坛公园',
-          spec: '成人票',
-          price: 15,
-          count: 1,
-          total: 15,
-          status: 'cancelled',
-          statusText: '已取消',
-          statusType: 'info',
-        },
-      ],
+      cancelled: [],
     }
 
     paging.value?.complete(mockData[type] || [])
