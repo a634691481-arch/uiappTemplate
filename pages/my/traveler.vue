@@ -80,7 +80,7 @@
         </view>
       </view>
 
-      <view class="flex gap-2 mt-4">
+      <view class="grid grid-cols-2 gap-2 mt-4">
         <u-button type="default" class="flex-1" @click="showAddModal = false">取消</u-button>
         <u-button type="primary" class="flex-1" @click="submitAdd">确定</u-button>
       </view>
@@ -239,7 +239,7 @@
       },
     ]
 
-    paging.value?.complete([])
+    paging.value?.complete([...mockData])
   }
 </script>
 
