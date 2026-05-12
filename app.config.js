@@ -52,10 +52,10 @@ export default {
      * 如果 mode = 2 则代表list内的页面不可以被分享，不在list内的页面可以被分享
      * 注意: list内是通配符表达式，非正则表达式
      */
-    mode: 0,
+    mode: 2,
     // ['shareAppMessage', 'shareTimeline'],
-    menus: ['shareAppMessage'],
-    list: ['/pages/index/*', '/pages/goods/*', '/pages_template/*'],
+    menus: ['shareAppMessage', 'shareTimeline'],
+    list: [],
   },
   checkEncryptRequest: {
     mode: 1,
