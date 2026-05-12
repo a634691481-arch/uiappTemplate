@@ -239,40 +239,41 @@
     vk.showLoading({ title: '正在获取微信授权...', mask: true })
 
     try {
-      const wechatLoginResult = await uni.login()
+      // const wechatLoginResult = await uni.login()
 
-      loginLoadingText.value = '正在验证身份...'
-      vk.showLoading({ title: '正在验证身份...', mask: true })
-      const { data: authData } = await api.getOpenid({
-        wxCode: wechatLoginResult.code,
-        channelCode: '05',
-      })
+      // loginLoadingText.value = '正在验证身份...'
+      // vk.showLoading({ title: '正在验证身份...', mask: true })
+      // const { data: authData } = await api.getOpenid({
+      //   wxCode: wechatLoginResult.code,
+      //   channelCode: '05',
+      // })
 
-      loginLoadingText.value = '正在获取手机号...'
-      vk.showLoading({ title: '正在获取手机号...', mask: true })
-      const phoneAuthResult = await api.getPhoneNumber({
-        openId: authData.openId,
-        unionId: authData.unionId,
-        phoneCode: event?.detail?.code,
-        channelCode: '05',
-      })
+      // loginLoadingText.value = '正在获取手机号...'
+      // vk.showLoading({ title: '正在获取手机号...', mask: true })
+      // const phoneAuthResult = await api.getPhoneNumber({
+      //   openId: authData.openId,
+      //   unionId: authData.unionId,
+      //   phoneCode: event?.detail?.code,
+      //   channelCode: '05',
+      // })
 
-      console.log('phoneAuthResult==> ', phoneAuthResult)
+      // console.log('phoneAuthResult==> ', phoneAuthResult)
 
-      vk.setStorageSync('uni_id_token', phoneAuthResult.data)
+      // vk.setStorageSync('uni_id_token', phoneAuthResult.data)
+      vk.setStorageSync('uni_id_token', '5555555555555')
       vk.setStorageSync('uni_id_token_expired', Date.now() + 365 * 24 * 60 * 60 * 1000) // 过期时间设置为一年后
 
       loginLoadingText.value = '正在获取用户信息...'
       vk.showLoading({ title: '正在获取用户信息...', mask: true })
-      await vk.vuex.dispatch('$user/getUserInfo')
+      // await vk.vuex.dispatch('$user/getUserInfo')
 
       loginLoadingText.value = '登录成功，正在跳转...'
       vk.showLoading({ title: '登录成功，正在跳转...', mask: true })
 
-      // const originalPage = vk.navigate.getOriginalPage()
-      // vk.redirectTo(originalPage?.url || '/pages/index/index')
+      const originalPage = vk.navigate.getOriginalPage()
+      vk.redirectTo(originalPage?.url || '/pages/index/index')
 
-      vk.navigate.originalTo()
+      // vk.navigate.originalTo()
     } catch (error) {
       // console.error('登录失败:', error)
       // vk.toast('登录失败，请稍后重试', 'none', 2000)
