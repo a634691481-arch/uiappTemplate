@@ -93,8 +93,8 @@
                 :style="{ marginLeft: $u.addUnit(iconSpacing) }"
             >
 
-                <yy-icon name="ri:arrow-down-s-fill" :size="selectIconSize" color="#C0C4CC"></yy-icon>
-                <!-- <u-icon name="arrow-down-fill" :size="selectIconSize" color="var(--u-light-color)"></u-icon> -->
+                <!-- <yy-icon name="ri:arrow-down-s-fill" :size="selectIconSize" color="#C0C4CC"></yy-icon> -->
+                <u-icon name="arrow-down-fill" :size="selectIconSize" color="var(--u-light-color)"></u-icon>
                  
             </view>
         </view>
