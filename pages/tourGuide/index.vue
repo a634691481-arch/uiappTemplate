@@ -34,7 +34,7 @@
       <!-- 左侧城市列表 -->
       <scroll-view
         scroll-y
-        class="bg-gray-50 flex flex-col w-20"
+        class="menu-scroll-view bg-gray-50 flex flex-col w-20"
         :style="{ height: containerHeight }"
         :scroll-top="scrollTop"
         scroll-with-animation
@@ -44,6 +44,7 @@
           :class="current === index ? 'bg-white text-gray-900 font-medium' : 'text-gray-500'"
           v-for="(item, index) in state.cityList"
           :key="item"
+          @click="switchMenu(index)"
         >
           <view
             v-if="current === index"
@@ -60,6 +61,7 @@
         :style="{ height: containerHeight }"
         :scroll-top="scrollRightTop"
         scroll-with-animation
+        scroll-event-throttle="50"
         @scroll="rightScroll"
       >
         <!-- 按城市分组的景区列表  flex flex-col gap-3 pb-3-->
@@ -311,7 +313,9 @@
   }
 
   async function rightScroll(e) {
-    oldScrollTop.value = e.detail.scrollTop
+    // 兼容不同平台的 scrollTop 获取方式
+    const scrollTop = e.detail?.scrollTop ?? e.target?.scrollTop ?? 0
+    oldScrollTop.value = scrollTop
     if (arr.value.length === 0) {
       await getMenuItemTop()
     }
@@ -321,7 +325,7 @@
     }
     timer.value = setTimeout(() => {
       timer.value = null
-      const scrollHeight = e.detail.scrollTop + menuHeight.value / 2
+      const scrollHeight = scrollTop + menuHeight.value / 2
       for (let i = 0; i < arr.value.length; i++) {
         const height1 = arr.value[i]
         const height2 = arr.value[i + 1]
@@ -330,7 +334,7 @@
           return
         }
       }
-    }, 10)
+    }, 50)
   }
 
   function selectLevel(level) {
