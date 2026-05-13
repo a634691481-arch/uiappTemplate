@@ -217,6 +217,13 @@
 				"disableScroll": true,
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/test/chineseEnglish",
+			"style": {
+				"disableScroll": true,
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"globalStyle": {
