@@ -244,7 +244,11 @@
   // 头像/昵称区点击：未登录跳登录页，已登录打开编辑弹框
   function onUserClick() {
     if (!isLogin.value) {
-      vk.myfn.navigateToLogin('/pages/my/index')
+      vk.navigateToLogin({
+        redirectUrl: '/pages/my/index',
+        mode: 'navigateTo',
+      })
+
       return
     }
     showEdit.value = true

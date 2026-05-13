@@ -228,7 +228,8 @@ util.navigateBack = function(obj) {
  */
 util.originalTo = function() {
 	let vk = uni.vk;
-	let originalPage = vk.navigate.getOriginalPage();
+  let originalPage = vk.navigate.getOriginalPage();
+  console.log("originalPage==> ", originalPage);
 	vk.navigate.setOriginalPage(null);
 	util.redirectTo(originalPage);
 };

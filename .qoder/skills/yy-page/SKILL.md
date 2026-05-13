@@ -1,5 +1,5 @@
 ---
-name: uni-app-page-dev
+name: yy-page
 description: 基于 Uni-App + Vue3 项目规范创建新页面。当用户需要新增页面、开发分页列表页、或使用 yy-paging / z-paging 组件时自动应用此 skill。涵盖页面模板、pages.json 注册、状态管理、分页查询、TailwindCSS 样式及代码风格规范。
 ---
 

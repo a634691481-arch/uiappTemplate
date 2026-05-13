@@ -37,7 +37,13 @@ export default {
      * 在无需登录的页面上执行kh或sys函数，也会自动判断是否登录，未登录会自动跳登录页面，登录成功后会自动返回本来要跳转的页面。
      */
     mode: 2,
-    list: ['/pages/tourGuide/index', '/pages/index/index', '/pages/consult/index', '/pages/my/index'],
+    list: [
+      '/pages/tourGuide/index',
+      '/pages/index/index',
+      '/pages/consult/index',
+      '/pages/login/index',
+      '/pages/my/index',
+    ],
   },
   checkSharePages: {
     /**
@@ -46,10 +52,10 @@ export default {
      * 如果 mode = 2 则代表list内的页面不可以被分享，不在list内的页面可以被分享
      * 注意: list内是通配符表达式，非正则表达式
      */
-    mode: 0,
+    mode: 2,
     // ['shareAppMessage', 'shareTimeline'],
-    menus: ['shareAppMessage'],
-    list: ['/pages/index/*', '/pages/goods/*', '/pages_template/*'],
+    menus: ['shareAppMessage', 'shareTimeline'],
+    list: [],
   },
   checkEncryptRequest: {
     mode: 1,
