@@ -17,7 +17,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "weapp-tw patch"
+    "postinstall": "weapp-tw patch",
+    "upload": "node scripts/upload.js"
   },
   "author": "VK",
   "license": "MIT",
@@ -118,6 +119,7 @@
     "@iconify/vue": "^5.0.0",
     "chokidar": "^5.0.0",
     "crypto-js": "^4.2.0",
-    "js-md5": "^0.8.3"
+    "js-md5": "^0.8.3",
+    "miniprogram-ci": "^2.1.31"
   }
 }
