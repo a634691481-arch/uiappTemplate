@@ -2,7 +2,7 @@ const ci = require('miniprogram-ci')
 const path = require('path')
 const fs = require('fs')
 const os = require('os')
-const { spawn } = require('child_process')
+const { spawn, execSync } = require('child_process')
 const chalk = require('chalk')
 const ora = require('ora')
 const boxen = require('boxen')
@@ -37,10 +37,14 @@ const UPLOAD_CONFIG = {
 function getDeveloperName() {
   // 优先级：Git用户名 > 系统用户名
   try {
-    const gitName = require('child_process').execSync('git config user.name', { encoding: 'utf-8', cwd: ROOT }).trim()
+    const gitName = execSync('git config user.name', { encoding: 'utf-8', cwd: ROOT }).trim()
     if (gitName) return gitName
   } catch {}
-  return os.userInfo().username || 'developer'
+  try {
+    return os.userInfo().username || 'developer'
+  } catch {
+    return 'developer'
+  }
 }
 
 // ====== 工具函数 ======
