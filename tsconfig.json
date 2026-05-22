@@ -32,6 +32,15 @@
   "vueCompilerOptions": {
     "globalTypesPath": "./typings/auto-imports.d.ts"
   },
-  "include": ["src/**/*", "pages/**/*", "components/**/*", "typings/**/*", "*.vue", "*.ts", "*.js"],
+  "include": [
+    "src/**/*",
+    "pages/**/*",
+    "components/**/*",
+    "typings/**/*",
+    "*.vue",
+    "*.ts",
+    "*.js",
+    "scripts/hbuilderx-cli.js"
+  ],
   "exclude": ["node_modules", "dist", "**/*.js"]
 }
