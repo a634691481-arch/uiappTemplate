@@ -2,8 +2,8 @@
     "name" : "它思乐游",
     "appid" : "__UNI__CA8E78B",
     "description" : "钓鱼爱好者的实用工具，可查询天气情况和钓鱼指数，了解室内外气温变化、湿度、风向风速等。具备钓鱼地图功能，能轻松查看附近钓点。支持拍照识鱼，精准识别钓上来的鱼，还提供鱼类百科知识。",
-    "versionName" : "1.0.5",
-    "versionCode" : 5,
+    "versionName" : "1.0.9",
+    "versionCode" : 9,
     "transformPx" : false,
     "app-plus" : {
         "confusion" : {
