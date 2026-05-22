@@ -27,7 +27,7 @@
             "type" : "uni-app:app-ios"
         },
         {
-            "customPlaygroundType" : "local",
+            "customPlaygroundType" : "device",
             "openVueDevtools" : true,
             "playground" : "custom",
             "type" : "uni-app:app-android"
