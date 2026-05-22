@@ -8,17 +8,14 @@
   "devDependencies": {
     "@uni-ku/root": "^1.4.1",
     "autoprefixer": "^10.4.21",
-    "chalk": "^4.1.2",
     "code-inspector-plugin": "^0.20.12",
-    "ora": "^5.4.1",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "weapp-tailwindcss": "^3.7.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "weapp-tw patch",
-    "upload": "node scripts/upload.js"
+    "postinstall": "weapp-tw patch"
   },
   "author": "VK",
   "license": "MIT",
@@ -119,7 +116,6 @@
     "@iconify/vue": "^5.0.0",
     "chokidar": "^5.0.0",
     "crypto-js": "^4.2.0",
-    "js-md5": "^0.8.3",
-    "miniprogram-ci": "^2.1.31"
+    "js-md5": "^0.8.3"
   }
 }
