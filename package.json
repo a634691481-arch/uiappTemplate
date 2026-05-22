@@ -115,14 +115,8 @@
   "dependencies": {
     "@formkit/auto-animate": "^0.9.0",
     "@iconify/vue": "^5.0.0",
-    "@inquirer/prompts": "^8.4.3",
-    "boxen": "^5.1.2",
-    "chalk": "^4.1.2",
-    "chokidar": "^5.0.0",
     "crypto-js": "^4.2.0",
-    "inquirer": "^12.11.1",
     "js-md5": "^0.8.3",
-    "miniprogram-ci": "^2.1.31",
-    "ora": "^5.4.1"
+    "miniprogram-ci": "^2.1.31"
   }
 }
