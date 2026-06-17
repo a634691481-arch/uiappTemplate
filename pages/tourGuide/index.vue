@@ -214,6 +214,7 @@
       const navHeight = sysInfo.osName === 'ios' ? 44 : 48
       const tabbarHeight = 50
       // 全面屏设备底部安全区高度（如 iPhone X 的 Home Indicator），非全面屏为 0
+      // 全面屏设备底部安全区高度（如 iPhone X 的 Home Indicator），非全面屏为 0
       const safeAreaBottom = sysInfo.safeAreaInsets?.bottom
       const faultTolerantPx = 4
 
